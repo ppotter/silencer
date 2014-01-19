@@ -6,8 +6,14 @@
     
     <string name="silencing_ringer">Silencing ringer</string>
     <string name="restoring_ringer">Restoring ringer</string>
+
+    <string name="time_preference_dialog_positive">Set</string>
+    <string name="time_preference_dialog_negative">Cancel</string>
     
-    <string name="silence_day_long_events">Silence day long events</string>
+    <string name="silence_long_events">Long events preferences</string>
+    <string name="silence_day_long_events">Ignore long events</string>
+    <string name="silence_events_longer_then">Ignore events longer then</string>
+    
     <string name="vibrate">Vibrate</string>
     <string name="vibrate_summary">Set ringer to vibrate instead of silent</string>
     <string name="ringer_level">Ringer level</string>
