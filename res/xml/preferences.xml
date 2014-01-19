@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="pref_key_long_events"
+        android:title="@string/silence_day_long_events"
+        android:defaultValue="true" />
+    <CheckBoxPreference
+        android:key="pref_key_vibrate"
+        android:title="@string/vibrate"
+        android:summary="@string/vibrate_summary"
+        android:defaultValue="false" />
+    <PreferenceCategory
+        android:title="@string/volume_types"
+        android:key="pref_key_volume_types">
+	    <CheckBoxPreference
+	        android:key="pref_key_notifications"
+	        android:title="@string/notifications"
+	        android:defaultValue="true" />
+	    <CheckBoxPreference
+	        android:key="pref_key_media"
+	        android:title="@string/media"
+	        android:defaultValue="true" />
+	    <CheckBoxPreference
+	        android:key="pref_key_ringer"
+	        android:title="@string/ringer"
+	        android:defaultValue="true" />
+    </PreferenceCategory>
+<!--     <Preference
+        android:key="pref_key_ringer_level"
+        android:title="@string/ringer_level" /> -->
+
+</PreferenceScreen>

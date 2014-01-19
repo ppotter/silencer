@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Silencer</string>
+    <string name="action_settings">Settings</string>
+    <string name="silence_day_long_events">Silence day long events</string>
+    <string name="vibrate">Vibrate</string>
+    <string name="vibrate_summary">Set ringer to vibrate instead of silent</string>
+    <string name="ringer_level">Ringer level</string>
+    <string name="ringer_level_summary">Volume level to restore the ringer</string>
+    <string name="media">Media</string>
+    <string name="notifications">Notifications</string>
+    <string name="ringer">Ringer</string>
+    <string name="volume_types">Volume types</string>
+
+</resources>
