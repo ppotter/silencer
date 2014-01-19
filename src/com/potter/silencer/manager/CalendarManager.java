@@ -22,6 +22,8 @@ import com.potter.silencer.ui.preference.TimeDialogPreference;
 
 public class CalendarManager {
 
+	private static final long ALARM_BUFFER = 1000;
+	
 	public static final String ACTION_START_SILENCE = "com.potter.silencer.ACTION_START_SILENCE";
 	public static final String ACTION_END_SILENCE = "com.potter.silencer.ACTION_END_SILENCE";
 
@@ -128,8 +130,8 @@ public class CalendarManager {
 		long eventLength = instance.getEnd() - instance.getBegin();
 		
 		if(eventLength < maxLength){
-			getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin(),	prepareStartIntent(instance));
-			getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd(), prepareEndIntent(instance));
+			getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin() + ALARM_BUFFER, prepareStartIntent(instance));
+			getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd() - ALARM_BUFFER, prepareEndIntent(instance));
 		}
 		
 		return this;

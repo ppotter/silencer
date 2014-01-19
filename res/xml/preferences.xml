@@ -15,7 +15,7 @@
 	    <com.potter.silencer.ui.preference.TimeDialogPreference
 	        android:key="pref_key_long_events_length"
 	        android:title="@string/silence_events_longer_then" 
-            android:layout="@layout/long_events_preference_item"/>
+            android:layout="@layout/right_align_summary_preference_item"/>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/volume_types"
@@ -32,6 +32,11 @@
 	        android:key="pref_key_ringer"
 	        android:title="@string/ringer"
 	        android:defaultValue="true" />
+	    <com.potter.silencer.ui.preference.VolumeNumberPickerPreference
+            android:key="pref_key_volume_restore_level"
+            android:title="@string/volume_restore_level" 
+            android:layout="@layout/right_align_summary_preference_item"/>
     </PreferenceCategory>
+    
 
 </PreferenceScreen>

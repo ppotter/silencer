@@ -1,11 +1,5 @@
 package com.potter.silencer.ui.preference;
 
-import com.potter.silencer.R;
-
-import android.content.Context;
-import android.preference.EditTextPreference;
-import android.util.AttributeSet;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
@@ -13,8 +7,11 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
 
+import com.potter.silencer.R;
+import com.potter.silencer.ui.fragment.SettingsFragment;
+
 public class TimeDialogPreference extends DialogPreference {
-	private int lastHour = 0;
+	private int lastHour = 23;
 	private int lastMinute = 0;
 	private TimePicker timePicker = null;
 
@@ -36,18 +33,18 @@ public class TimeDialogPreference extends DialogPreference {
 		return (Integer.parseInt(pieces[1]));
 	}
 
-	public TimeDialogPreference(Context ctxt, AttributeSet attrs) {
-		super(ctxt, attrs);
+	public TimeDialogPreference(Context context, AttributeSet attrs) {
+		super(context, attrs);
 
-		setPositiveButtonText(R.string.time_preference_dialog_positive);
-		setNegativeButtonText(R.string.time_preference_dialog_negative);
+		setPositiveButtonText(R.string.preference_dialog_positive);
+		setNegativeButtonText(R.string.preference_dialog_negative);
 	}
 
 	@Override
 	protected View onCreateDialogView() {
 		timePicker = new TimePicker(getContext());
 		timePicker.setIs24HourView(true);
-		return (timePicker);
+		return timePicker;
 	}
 
 	@Override
@@ -95,7 +92,7 @@ public class TimeDialogPreference extends DialogPreference {
 
 		if (restoreValue) {
 			if (defaultValue == null) {
-				time = getPersistedString("00:00");
+				time = getPersistedString(SettingsFragment.DEFAULT_PREF_LONG_EVENTS_LENGTH);
 			} else {
 				time = getPersistedString(defaultValue.toString());
 			}
