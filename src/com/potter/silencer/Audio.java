@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 public class Audio {
 
@@ -20,7 +21,7 @@ public class Audio {
 		if(preferences.getBoolean(SettingsActivity.KEY_PREF_NOTIFICATIONS, true)) audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 0, 0);
 		if(preferences.getBoolean(SettingsActivity.KEY_PREF_RINGER, true)) audioManager.setStreamVolume(AudioManager.STREAM_RING, 0, 0);
 		if(preferences.getBoolean(SettingsActivity.KEY_PREF_VIBRATE, false)) audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-
+		Toast.makeText(context, R.string.silencing_ringer, Toast.LENGTH_SHORT).show();
 	}
 	
 	public static void restore(final Context context, final float percentage)
@@ -32,6 +33,6 @@ public class Audio {
 		if(preferences.getBoolean(SettingsActivity.KEY_PREF_NOTIFICATIONS, true)) audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION) * percentage), 0);
 		if(preferences.getBoolean(SettingsActivity.KEY_PREF_RINGER, true)) audioManager.setStreamVolume(AudioManager.STREAM_RING, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_RING) * percentage), 0);
 		if(preferences.getBoolean(SettingsActivity.KEY_PREF_VIBRATE, false)) audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-
+		Toast.makeText(context, R.string.restoring_ringer, Toast.LENGTH_SHORT).show();
 	}
 }
