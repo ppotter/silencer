@@ -18,6 +18,12 @@ public class TimeDialogPreference extends DialogPreference {
 	private int lastMinute = 0;
 	private TimePicker timePicker = null;
 
+	public static long getMilliseconds(String time){
+		int hour = getHour(time), 
+				minutes = getMinute(time);
+		return (hour * 1000 * 60 * 60) + (minutes * 1000 * 60);
+	}
+	
 	public static int getHour(String time) {
 		String[] pieces = time.split(":");
 
@@ -60,13 +66,22 @@ public class TimeDialogPreference extends DialogPreference {
 			lastHour = timePicker.getCurrentHour();
 			lastMinute = timePicker.getCurrentMinute();
 
-			String time = String.valueOf(lastHour) + ":"
-					+ String.valueOf(lastMinute);
+			String time = formatTime();
 
 			if (callChangeListener(time)) {
 				persistString(time);
 			}
 		}
+	}
+	
+	protected String formatTime(){
+		String hour = String.valueOf(lastHour);
+		String minute = String.valueOf(lastMinute);
+		String time = ((lastHour < 10) ? "0" + hour : hour) 
+				+ ":" + 
+				((lastMinute < 10) ? "0" + minute : minute);
+		
+		return time;
 	}
 
 	@Override

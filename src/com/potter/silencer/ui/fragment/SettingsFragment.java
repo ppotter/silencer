@@ -20,6 +20,8 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	public static final String KEY_PREF_MEDIA = "pref_key_media";
 	public static final String KEY_PREF_RINGER = "pref_key_ringer";
 	
+	public static final String DEFAULT_PREF_LONG_EVENTS_LENGTH = "00:00";
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
