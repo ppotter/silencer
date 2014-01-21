@@ -23,6 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name="com.potter.silencer.ui.activity.NotifySilenceActivity" 
+            android:theme="@style/Theme.Transparent"/>
 
         <receiver android:name="com.potter.silencer.receiver.SilencerBroadcastReceiver" ></receiver>
         <receiver android:name="com.potter.silencer.receiver.CalendarChangedBroadcastReceiver" >
@@ -30,6 +34,11 @@
                 <action android:name="android.intent.action.PROVIDER_CHANGED" />
                 <data android:scheme="content" />
                 <data android:host="com.android.calendar" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.potter.silencer.receiver.UserSilencedBroadcastReceiver" >
+            <intent-filter>
+                <action android:name="android.media.RINGER_MODE_CHANGED" />
             </intent-filter>
         </receiver>
     </application>

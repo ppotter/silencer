@@ -23,7 +23,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	public static final String KEY_PREF_VOLUME_RESTORE_LEVEL = "pref_key_volume_restore_level";
 	
 	public static final String DEFAULT_PREF_LONG_EVENTS_LENGTH = "23:00";
-	public static final Integer DEFAULT_VOLUME_RESTORE_LEVEL = 80;
+	public static final Integer DEFAULT_VOLUME_RESTORE_LEVEL = 8;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 		addPreferencesFromResource(R.xml.preferences);
 		
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		setVolumeRestoreLevelSummary(preferences.getInt(KEY_PREF_VOLUME_RESTORE_LEVEL, 8));
+		setVolumeRestoreLevelSummary(preferences.getInt(KEY_PREF_VOLUME_RESTORE_LEVEL, DEFAULT_VOLUME_RESTORE_LEVEL));
 		setLongEventsLengthSummary(preferences.getString(KEY_PREF_LONG_EVENTS_LENGTH, DEFAULT_PREF_LONG_EVENTS_LENGTH),
 				preferences.getBoolean(KEY_PREF_LONG_EVENTS_ENABLED, true));
 	}

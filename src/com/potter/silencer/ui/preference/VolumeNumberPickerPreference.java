@@ -1,7 +1,5 @@
 package com.potter.silencer.ui.preference;
 
-import com.potter.silencer.ui.fragment.SettingsFragment;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.NumberPicker;
