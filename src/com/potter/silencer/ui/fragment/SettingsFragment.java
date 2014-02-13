@@ -7,14 +7,16 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
+import com.potter.silencer.CalendarSyncAsyncTask;
 import com.potter.silencer.R;
+import com.potter.silencer.manager.CalendarManager;
 import com.potter.silencer.ui.preference.VolumeNumberPickerPreference;
 
 public class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener{
 
 	
 	public static final String KEY_PREF_LONG_EVENTS_ENABLED = "pref_key_long_events_enabled";
-	public static final String KEY_PREF_LONG_EVENTS_CATEGORY = "pref_key_long_events_category";
+	public static final String KEY_PREF_SILENCE_CALENDAR_EVENT = "pref_key_silence_calendar_event";
 	public static final String KEY_PREF_LONG_EVENTS_LENGTH = "pref_key_long_events_length";
 	public static final String KEY_PREF_VIBRATE = "pref_key_vibrate";
 	public static final String KEY_PREF_NOTIFICATIONS = "pref_key_notifications";
@@ -63,6 +65,10 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 					sharedPreferences.getBoolean(KEY_PREF_LONG_EVENTS_ENABLED, true));
 		} else if(key.equals(KEY_PREF_VOLUME_RESTORE_LEVEL)) {
 			setVolumeRestoreLevelSummary(sharedPreferences.getInt(KEY_PREF_VOLUME_RESTORE_LEVEL, 8));
+		} else if(key.equals(KEY_PREF_SILENCE_CALENDAR_EVENT)) {
+			if(sharedPreferences.getBoolean(KEY_PREF_SILENCE_CALENDAR_EVENT, false)){
+				new CalendarSyncAsyncTask(getActivity()).execute(CalendarSyncAsyncTask.CANCEL_ALARMS);
+			}
 		}
 		
 	}

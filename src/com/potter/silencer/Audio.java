@@ -16,7 +16,6 @@ public class Audio {
 	{
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-//		audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, 0, 0);
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_MEDIA, true)) audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_NOTIFICATIONS, true)) audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 0, 0);
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_RINGER, true)) audioManager.setStreamVolume(AudioManager.STREAM_RING, 0, 0);

@@ -5,12 +5,15 @@ import java.util.Calendar;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.CalendarContract.Instances;
 
 import com.potter.silencer.AlarmFactory;
 import com.potter.silencer.model.CalendarEventInstance;
+import com.potter.silencer.ui.fragment.SettingsFragment;
 
 public class CalendarManager {
 
@@ -28,32 +31,34 @@ public class CalendarManager {
 	}
 
 	public CalendarManager createAllCurrentAlarms() {
-		Cursor cursor = null;
-		ContentResolver contentResolver = mContext.getContentResolver();
-//		Uri uri = Uri.parse("content://com.android.calendar/instances");
-		Uri uri = Instances.CONTENT_URI;
-		uri = ContentUris.withAppendedId(uri, System.currentTimeMillis());//start
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.YEAR, 1);
-		uri = ContentUris.withAppendedId(uri, calendar.getTimeInMillis());//end
-		
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
-		String selection = null;
-		String[] selectionArgs = null;
-
-		cursor = contentResolver.query(uri,
-				CalendarEventInstance.EVENT_PROJECTION, selection,
-				selectionArgs, null);
-
-		getAlarmFactory().createAlarms(cursor);
+		if(preferences.getBoolean(SettingsFragment.KEY_PREF_SILENCE_CALENDAR_EVENT, false)){
+			Cursor cursor = null;
+			ContentResolver contentResolver = mContext.getContentResolver();
+			Uri uri = Instances.CONTENT_URI;
+			uri = ContentUris.withAppendedId(uri, System.currentTimeMillis());//start
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.YEAR, 1);
+			uri = ContentUris.withAppendedId(uri, calendar.getTimeInMillis());//end
+			
+			
+			String selection = null;
+			String[] selectionArgs = null;
+			
+			cursor = contentResolver.query(uri,
+					CalendarEventInstance.EVENT_PROJECTION, selection,
+					selectionArgs, null);
+			
+			getAlarmFactory().createAlarms(cursor);
+		}
 		return this;
 	}
 	
 	public CalendarManager cancelAllCurrentAlarms(){
 		Cursor cursor = null;
 		ContentResolver contentResolver = mContext.getContentResolver();
-//		Uri uri = Uri.parse("content://com.android.calendar/instances");
 		Uri uri = Instances.CONTENT_URI;
 		uri = ContentUris.withAppendedId(uri, System.currentTimeMillis());//start
 		Calendar calendar = Calendar.getInstance();

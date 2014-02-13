@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.potter.silencer.CalendarSyncAsyncTask;
 import com.potter.silencer.manager.CalendarManager;
 import com.potter.silencer.ui.fragment.SettingsFragment;
 
@@ -18,24 +19,7 @@ public class SettingsActivity extends Activity {
 		getFragmentManager().beginTransaction()
 			.replace(android.R.id.content, new SettingsFragment())
 			.commit();
-		new CalendarLoaderTask(this).execute();
-
-	}
-	
-	private class CalendarLoaderTask extends AsyncTask<Void, Integer, Void>{
-
-		private Context context;
-		
-		public CalendarLoaderTask(Context context){
-			this.context = context;
-		}
-		
-		@Override
-		protected Void doInBackground(Void... params) {
-			CalendarManager cm = new CalendarManager(context);
-			cm.cancelAllCurrentAlarms().createAllCurrentAlarms();
-			return null;
-		}
+		new CalendarSyncAsyncTask(this).execute(CalendarSyncAsyncTask.CANCEL_CREATE_ALARMS);
 	}
 
 }

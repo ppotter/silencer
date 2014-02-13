@@ -1,5 +1,6 @@
 package com.potter.silencer.receiver;
 
+import com.potter.silencer.CalendarSyncAsyncTask;
 import com.potter.silencer.manager.CalendarManager;
 
 import android.content.BroadcastReceiver;
@@ -19,7 +20,7 @@ public class CalendarChangedBroadcastReceiver extends BroadcastReceiver {
 //		} else {
 //			
 //		}
-		new CalendarManager(context).cancelAllCurrentAlarms().createAllCurrentAlarms();
+		new CalendarSyncAsyncTask(context).execute(CalendarSyncAsyncTask.CANCEL_CREATE_ALARMS);
 	}
 
 }
