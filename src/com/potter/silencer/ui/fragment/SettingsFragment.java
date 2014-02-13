@@ -50,7 +50,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	    super.onPause();
 		PreferenceManager.getDefaultSharedPreferences(getActivity())
 	            .unregisterOnSharedPreferenceChangeListener(this);
-		getActivity().finish();
+//		getActivity().finish();
 	}
 	
 	

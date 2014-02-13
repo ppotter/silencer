@@ -36,7 +36,7 @@ public class NotifySilenceActivity extends FragmentActivity implements OnTimeSet
 		long duration = PreferenceManager.getDefaultSharedPreferences(this).getLong(KEY_PREF_DURATION, DEFAULT_DURATION);
 		Calendar time = Calendar.getInstance();
 		time.add(Calendar.HOUR_OF_DAY, (int) TimeUnit.MILLISECONDS.toHours(duration));
-		time.add(Calendar.MINUTE, (int) TimeUnit.MILLISECONDS.toMinutes(duration));
+		time.add(Calendar.MINUTE, (int) TimeUnit.MILLISECONDS.toMinutes(duration)%60);
 		
 		timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
 		timePickerDialog.setOnTimeSetListener(this);
@@ -69,8 +69,8 @@ public class NotifySilenceActivity extends FragmentActivity implements OnTimeSet
 			timeSet.set(Calendar.MINUTE, minute);
 			if(timeSet.getTimeInMillis() < current.getTimeInMillis())
 				timeSet.add(Calendar.DAY_OF_YEAR, 1);
-			long duration = AlarmFactory.timeToMilliseconds(hourOfDay, minute);
-	//		long duration = timeSet.getTimeInMillis() - current.getTimeInMillis();
+//			long duration = AlarmFactory.timeToMilliseconds(hourOfDay, minute);
+			long duration = timeSet.getTimeInMillis() - current.getTimeInMillis();
 			PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(KEY_PREF_DURATION, duration).commit();
 			AlarmFactory.newInstance(this).createEndAlarm(System.currentTimeMillis() + duration);
 		} else {
@@ -81,6 +81,5 @@ public class NotifySilenceActivity extends FragmentActivity implements OnTimeSet
 		NotificationManager notificationManager = (NotificationManager) getSystemService(Activity.NOTIFICATION_SERVICE);
 		notificationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.newInstance(this, hourOfDay, minute));
 		finish();
-
 	}
 }
