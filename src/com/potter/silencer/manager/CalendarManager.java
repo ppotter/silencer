@@ -15,6 +15,7 @@ import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Instances;
 
+import com.potter.silencer.AlarmFactory;
 import com.potter.silencer.model.CalendarEventInstance;
 import com.potter.silencer.receiver.SilencerBroadcastReceiver;
 import com.potter.silencer.ui.fragment.SettingsFragment;
@@ -22,25 +23,17 @@ import com.potter.silencer.ui.preference.TimeDialogPreference;
 
 public class CalendarManager {
 
-	private static final long ALARM_BUFFER = 1000;
-	
-	public static final String ACTION_START_SILENCE = "com.potter.silencer.ACTION_START_SILENCE";
-	public static final String ACTION_END_SILENCE = "com.potter.silencer.ACTION_END_SILENCE";
-
-	public static final String EXTRA_INSTANCE_ID = "com.potter.silencer.EXTRA_INSTANCE_ID";
-
 	private Context mContext;
-	private AlarmManager mAlarmManager;
+	private AlarmFactory mAlarmFactory;
 
 	public CalendarManager(final Context context) {
 		this.mContext = context;
 	}
 
-	private AlarmManager getAlarmManager() {
-		if (mAlarmManager == null)
-			mAlarmManager = (AlarmManager) mContext
-					.getSystemService(Context.ALARM_SERVICE);
-		return mAlarmManager;
+	private AlarmFactory getAlarmFactory() {
+		if (mAlarmFactory == null)
+			mAlarmFactory = AlarmFactory.newInstance(mContext);
+		return mAlarmFactory;
 	}
 
 	public CalendarManager createAllCurrentAlarms() {
@@ -62,7 +55,7 @@ public class CalendarManager {
 				CalendarEventInstance.EVENT_PROJECTION, selection,
 				selectionArgs, null);
 
-		createAlarms(cursor);
+		getAlarmFactory().createAlarms(cursor);
 		return this;
 	}
 	
@@ -82,64 +75,7 @@ public class CalendarManager {
 				CalendarEventInstance.EVENT_PROJECTION, selection,
 				selectionArgs, null);
 
-		cancelAlarms(cursor);
-		return this;
-	}
-
-	public CalendarManager createAlarms(Cursor cursor){
-		while(cursor.moveToNext()){
-			createAlarm(cursor);
-		}
-		return this;
-	}
-	
-	public CalendarManager createAlarm(Cursor cursor) {
-		return createAlarm(new CalendarEventInstance(cursor));
-	}
-
-	public CalendarManager cancelAlarms(Cursor cursor) {
-		while (cursor.moveToNext()) {
-			cancelAlarm(cursor);
-		}
-		return this;
-	}
-
-	public CalendarManager cancelAlarm(Cursor cursor) {
-		return cancelAlarm(new CalendarEventInstance(cursor));
-	}
-
-	public PendingIntent prepareStartIntent(final CalendarEventInstance instance) {
-		Intent startIntent = new Intent(ACTION_START_SILENCE, null, mContext, SilencerBroadcastReceiver.class);
-		startIntent.putExtra(EXTRA_INSTANCE_ID, instance.getId());
-		PendingIntent startAlarmIntent = PendingIntent.getBroadcast(mContext, 0, startIntent, 0);
-		return startAlarmIntent;
-	}
-
-	public PendingIntent prepareEndIntent(final CalendarEventInstance instance) {
-		Intent endIntent = new Intent(ACTION_END_SILENCE, null, mContext, SilencerBroadcastReceiver.class);
-		endIntent.putExtra(EXTRA_INSTANCE_ID, instance.getId());
-		PendingIntent endAlarmIntent = PendingIntent.getBroadcast(mContext, 0, endIntent, 0);
-		return endAlarmIntent;
-	}
-
-	public CalendarManager createAlarm(final CalendarEventInstance instance) {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-		String time = preferences.getString(SettingsFragment.KEY_PREF_LONG_EVENTS_LENGTH, SettingsFragment.DEFAULT_PREF_LONG_EVENTS_LENGTH);
-		
-		long maxLength =  TimeDialogPreference.getMilliseconds(time);
-		long eventLength = instance.getEnd() - instance.getBegin();
-		
-		if(eventLength < maxLength){
-			getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin() + ALARM_BUFFER, prepareStartIntent(instance));
-			getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd() - ALARM_BUFFER, prepareEndIntent(instance));
-		}
-		
-		return this;
-	}
-
-	public CalendarManager cancelAlarm(final CalendarEventInstance instance) {
-		getAlarmManager().cancel(prepareStartIntent(instance));
-		getAlarmManager().cancel(prepareEndIntent(instance));
+		getAlarmFactory().cancelAlarms(cursor);
 		return this;
 	}
 }

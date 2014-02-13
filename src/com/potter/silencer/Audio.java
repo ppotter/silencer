@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import com.potter.silencer.ui.fragment.SettingsFragment;
+import com.potter.silencer.ui.preference.VolumeNumberPickerPreference;
 
 public class Audio {
 
@@ -21,6 +22,14 @@ public class Audio {
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_RINGER, true)) audioManager.setStreamVolume(AudioManager.STREAM_RING, 0, 0);
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_VIBRATE, false)) audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
 		Toast.makeText(context, R.string.silencing_ringer, Toast.LENGTH_SHORT).show();
+	}
+	
+	public static void restore(final Context context){
+		float value = VolumeNumberPickerPreference.getFloatValue(
+				PreferenceManager.getDefaultSharedPreferences(context)
+					.getInt(SettingsFragment.KEY_PREF_VOLUME_RESTORE_LEVEL, 
+							SettingsFragment.DEFAULT_VOLUME_RESTORE_LEVEL));
+		Audio.restore(context, value);
 	}
 	
 	public static void restore(final Context context, final float percentage)

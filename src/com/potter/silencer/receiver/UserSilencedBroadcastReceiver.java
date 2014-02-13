@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 
 import com.potter.silencer.ui.activity.NotifySilenceActivity;
+import com.potter.silencer.ui.notification.SilencedNotificationFactory;
 
 public class UserSilencedBroadcastReceiver extends BroadcastReceiver {
 
@@ -16,6 +17,8 @@ public class UserSilencedBroadcastReceiver extends BroadcastReceiver {
 			Intent i = new Intent(context, NotifySilenceActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(i);
+		} else {
+			SilencedNotificationFactory.cancelNotification(context);
 		}
 	}
 
