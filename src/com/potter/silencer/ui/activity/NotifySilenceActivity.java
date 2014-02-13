@@ -63,13 +63,11 @@ public class NotifySilenceActivity extends FragmentActivity implements OnTimeSet
 	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
 		if(hourOfDay > 0 && minute > 0){
 			//if an actual value as selected and the done button pressed.
-			Toast.makeText(this, "new time:" + hourOfDay + "-" + minute, Toast.LENGTH_LONG).show();
 			Calendar current = Calendar.getInstance(), timeSet = Calendar.getInstance();
 			timeSet.set(Calendar.HOUR_OF_DAY, hourOfDay);
 			timeSet.set(Calendar.MINUTE, minute);
 			if(timeSet.getTimeInMillis() < current.getTimeInMillis())
 				timeSet.add(Calendar.DAY_OF_YEAR, 1);
-//			long duration = AlarmFactory.timeToMilliseconds(hourOfDay, minute);
 			long duration = timeSet.getTimeInMillis() - current.getTimeInMillis();
 			PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(KEY_PREF_DURATION, duration).commit();
 			AlarmFactory.newInstance(this).createEndAlarm(System.currentTimeMillis() + duration);
