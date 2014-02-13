@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
-import com.potter.silencer.AlarmFactory;
 import com.potter.silencer.R;
 import com.potter.silencer.ui.activity.RestoreActivity;
 
@@ -18,14 +17,18 @@ public class SilencedNotificationFactory {
 
 	public static Notification newInstance(Context context, int hour, int minute){
 		
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher)
-		.setContentTitle(context.getString(R.string.notification_silenced_until, hour + ":" + minute))
 		.setContentText(context.getString(R.string.notification_click_to_restore))
 		.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, RestoreActivity.class), 0));
-		Notification notification = mBuilder.build();
+		if(hour > 0 || minute > 0){
+			builder.setContentTitle(context.getString(R.string.notification_silenced_until, hour + ":" + minute));
+		} else {
+			builder.setContentTitle(context.getString(R.string.notification_silenced_indefinitely));
+		}
+		Notification notification = builder.build();
 		notification.flags = Notification.FLAG_AUTO_CANCEL;
-		return mBuilder.build();
+		return builder.build();
 		
 	}
 	

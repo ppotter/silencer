@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="http://schemas.android.com/apk/res/android">
     <string name="done_label">Done</string>
+    <string name="keep_off">Keep Off!</string>
     <string name="day_picker_description">Month grid of days</string>
     <string name="year_picker_description">Year list</string>
     <string name="select_day">Select month and day</string>
@@ -33,6 +34,7 @@
    <string name="app_name">Silence Manager</string>
     <string name="action_settings">Settings</string>
     <string name="notification_silenced_until">Ringer silenced until: %s</string>
+    <string name="notification_silenced_indefinitely">Ringer silenced indefinitely</string>
     <string name="notification_click_to_restore">Click to restore volume</string>
     
     <string name="silencing_ringer">Silencing ringer</string>

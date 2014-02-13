@@ -2,24 +2,15 @@ package com.potter.silencer.manager;
 
 import java.util.Calendar;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.preference.PreferenceManager;
-import android.provider.CalendarContract;
 import android.provider.CalendarContract.Instances;
 
 import com.potter.silencer.AlarmFactory;
 import com.potter.silencer.model.CalendarEventInstance;
-import com.potter.silencer.receiver.SilencerBroadcastReceiver;
-import com.potter.silencer.ui.fragment.SettingsFragment;
-import com.potter.silencer.ui.preference.TimeDialogPreference;
 
 public class CalendarManager {
 

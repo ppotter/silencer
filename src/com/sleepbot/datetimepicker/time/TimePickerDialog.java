@@ -72,6 +72,7 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
     private OnTimeSetListener mCallback;
 
     private TextView mDoneButton;
+    private TextView mKeepOffButton;
     private TextView mHourView;
     private TextView mHourSpaceView;
     private TextView mMinuteView;
@@ -270,6 +271,23 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
             }
         });
         mDoneButton.setOnKeyListener(keyboardListener);
+        
+        mKeepOffButton = (TextView) view.findViewById(R.id.keep_off_button);
+        mKeepOffButton.setOnClickListener(new OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+        		if (mInKbMode && isTypedTimeFullyLegal()) {
+        			finishKbMode(false);
+        		} else {
+        			mTimePicker.tryVibrate();
+        		}
+        		if (mCallback != null) {
+        			mCallback.onTimeSet(mTimePicker, -1, -1);
+        		}
+        		dismiss();
+        	}
+        });
+        mKeepOffButton.setOnKeyListener(keyboardListener);
 
         // Enable or disable the AM/PM view.
         mAmPmHitspace = view.findViewById(R.id.ampm_hitspace);

@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 
-import com.potter.silencer.manager.CalendarManager;
 import com.potter.silencer.model.CalendarEventInstance;
 import com.potter.silencer.receiver.SilencerBroadcastReceiver;
 import com.potter.silencer.ui.fragment.SettingsFragment;

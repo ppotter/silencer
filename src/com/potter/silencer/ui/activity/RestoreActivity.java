@@ -1,7 +1,6 @@
 package com.potter.silencer.ui.activity;
 
 import android.app.Activity;
-import android.app.NotificationManager;
 import android.os.Bundle;
 
 import com.potter.silencer.Audio;

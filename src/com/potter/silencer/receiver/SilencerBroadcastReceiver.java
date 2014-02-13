@@ -4,21 +4,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import com.potter.silencer.AlarmFactory;
-import com.potter.silencer.Audio;
-import com.potter.silencer.manager.CalendarManager;
-import com.potter.silencer.ui.fragment.SettingsFragment;
-import com.potter.silencer.ui.notification.SilencedNotificationFactory;
-import com.potter.silencer.ui.preference.VolumeNumberPickerPreference;
-
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.potter.silencer.AlarmFactory;
+import com.potter.silencer.Audio;
+import com.potter.silencer.ui.notification.SilencedNotificationFactory;
 
 public class SilencerBroadcastReceiver extends BroadcastReceiver{
 

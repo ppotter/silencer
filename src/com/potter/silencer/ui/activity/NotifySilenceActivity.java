@@ -8,12 +8,11 @@ import android.app.NotificationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NotificationCompat;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.potter.silencer.AlarmFactory;
-import com.potter.silencer.R;
+import com.potter.silencer.Audio;
 import com.potter.silencer.ui.notification.SilencedNotificationFactory;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -62,16 +61,22 @@ public class NotifySilenceActivity extends FragmentActivity implements OnTimeSet
 
 	@Override
 	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-		Toast.makeText(this, "new time:" + hourOfDay + "-" + minute, Toast.LENGTH_LONG).show();
-		Calendar current = Calendar.getInstance(), timeSet = Calendar.getInstance();
-		timeSet.set(Calendar.HOUR_OF_DAY, hourOfDay);
-		timeSet.set(Calendar.MINUTE, minute);
-		if(timeSet.getTimeInMillis() < current.getTimeInMillis())
-			timeSet.add(Calendar.DAY_OF_YEAR, 1);
-		long duration = AlarmFactory.timeToMilliseconds(hourOfDay, minute);
-//		long duration = timeSet.getTimeInMillis() - current.getTimeInMillis();
-		PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(KEY_PREF_DURATION, duration).commit();
-		AlarmFactory.newInstance(this).createEndAlarm(System.currentTimeMillis() + duration);
+		if(hourOfDay > 0 && minute > 0){
+			//if an actual value as selected and the done button pressed.
+			Toast.makeText(this, "new time:" + hourOfDay + "-" + minute, Toast.LENGTH_LONG).show();
+			Calendar current = Calendar.getInstance(), timeSet = Calendar.getInstance();
+			timeSet.set(Calendar.HOUR_OF_DAY, hourOfDay);
+			timeSet.set(Calendar.MINUTE, minute);
+			if(timeSet.getTimeInMillis() < current.getTimeInMillis())
+				timeSet.add(Calendar.DAY_OF_YEAR, 1);
+			long duration = AlarmFactory.timeToMilliseconds(hourOfDay, minute);
+	//		long duration = timeSet.getTimeInMillis() - current.getTimeInMillis();
+			PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(KEY_PREF_DURATION, duration).commit();
+			AlarmFactory.newInstance(this).createEndAlarm(System.currentTimeMillis() + duration);
+		} else {
+			//If the keep off button was pressed.
+			Audio.mute(this);
+		}
 
 		NotificationManager notificationManager = (NotificationManager) getSystemService(Activity.NOTIFICATION_SERVICE);
 		notificationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.newInstance(this, hourOfDay, minute));
