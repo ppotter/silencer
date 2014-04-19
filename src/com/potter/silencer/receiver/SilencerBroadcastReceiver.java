@@ -26,9 +26,9 @@ public class SilencerBroadcastReceiver extends BroadcastReceiver{
 			Calendar calendar = GregorianCalendar.getInstance(); 
 			calendar.setTime(new Date());  
 			notifiationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.newInstance(context, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.HOUR)));
-
-		} else if ( intent.getAction().equals(AlarmFactory.ACTION_END_SILENCE)){
+		} else if (intent.getAction().equals(AlarmFactory.ACTION_END_SILENCE)){
 			Audio.restore(context);
+			SilencedNotificationFactory.cancelNotification(context);
 		} else {
 			Log.i(this.getClass().getCanonicalName(), "Unknown intent action: " + intent.getAction());
 		}

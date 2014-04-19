@@ -1,11 +1,10 @@
 package com.potter.silencer.receiver;
 
-import com.potter.silencer.CalendarSyncAsyncTask;
-import com.potter.silencer.manager.CalendarManager;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import com.potter.silencer.CalendarSyncAsyncTask;
 
 public class CalendarChangedBroadcastReceiver extends BroadcastReceiver {
 
@@ -17,7 +16,7 @@ public class CalendarChangedBroadcastReceiver extends BroadcastReceiver {
 //			
 //		} else if(intent.getAction().equals("event deleted")){//TODO
 //			
-//		} else {
+//		} else {//TODO
 //			
 //		}
 		new CalendarSyncAsyncTask(context).execute(CalendarSyncAsyncTask.CANCEL_CREATE_ALARMS);

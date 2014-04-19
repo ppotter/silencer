@@ -5,6 +5,10 @@
         android:title="@string/vibrate"
         android:summary="@string/vibrate_summary"
         android:defaultValue="false" />
+    <CheckBoxPreference
+        android:key="pref_key_military"
+        android:title="@string/military"
+        android:defaultValue="false" />
     <PreferenceCategory
         android:title="@string/calendar_event_preferences"
         android:key="pref_key_calendar_event">

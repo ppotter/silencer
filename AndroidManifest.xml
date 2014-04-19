@@ -26,15 +26,10 @@
         </activity>
         
         <activity
-            android:name="com.potter.silencer.ui.activity.NotifySilenceActivity" 
+            android:name="com.potter.silencer.ui.activity.SilenceTimePickerActivity" 
             android:noHistory="true"
             android:theme="@style/Theme.Transparent"/>
         
-        <activity
-            android:name="com.potter.silencer.ui.activity.RestoreActivity" 
-            android:noHistory="true"
-            android:theme="@style/Theme.Transparent"/>
-
         <receiver android:name="com.potter.silencer.receiver.SilencerBroadcastReceiver" ></receiver>
         <receiver android:name="com.potter.silencer.receiver.CalendarChangedBroadcastReceiver" >
             <intent-filter>

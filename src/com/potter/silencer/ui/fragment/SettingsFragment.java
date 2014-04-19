@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 
 import com.potter.silencer.CalendarSyncAsyncTask;
 import com.potter.silencer.R;
-import com.potter.silencer.manager.CalendarManager;
 import com.potter.silencer.ui.preference.VolumeNumberPickerPreference;
 
 public class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener{
@@ -23,6 +22,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	public static final String KEY_PREF_MEDIA = "pref_key_media";
 	public static final String KEY_PREF_RINGER = "pref_key_ringer";
 	public static final String KEY_PREF_VOLUME_RESTORE_LEVEL = "pref_key_volume_restore_level";
+	public static final String KEY_PREF_MILITARY = "pref_key_military";
 	
 	public static final String DEFAULT_PREF_LONG_EVENTS_LENGTH = "23:00";
 	public static final Integer DEFAULT_VOLUME_RESTORE_LEVEL = 8;
