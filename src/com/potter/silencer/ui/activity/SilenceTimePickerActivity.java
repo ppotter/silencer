@@ -54,7 +54,7 @@ public class SilenceTimePickerActivity extends FragmentActivity implements OnTim
 		timePickerDialog.setRetainInstance(true);
 		timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
 	}
-
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		
@@ -62,7 +62,7 @@ public class SilenceTimePickerActivity extends FragmentActivity implements OnTim
 			finish();
 		return super.onKeyDown(keyCode, event);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -85,6 +85,10 @@ public class SilenceTimePickerActivity extends FragmentActivity implements OnTim
 			PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(KEY_PREF_DURATION, duration).commit();
 		}
 
+		if(!Audio.isVolumnSilenced(this)){
+			Audio.mute(this);
+		}
+		
 		NotificationManager notificationManager = (NotificationManager) getSystemService(Activity.NOTIFICATION_SERVICE);
 		notificationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.newInstance(this, hourOfDay, minute));
 		finish();

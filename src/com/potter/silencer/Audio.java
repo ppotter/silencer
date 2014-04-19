@@ -3,6 +3,7 @@ package com.potter.silencer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
@@ -11,9 +12,29 @@ import com.potter.silencer.ui.preference.VolumeNumberPickerPreference;
 
 public class Audio {
 
+	public static volatile boolean recentlySilencedByApp = false;
+	
+	private static Handler mHandler = new Handler();
+	private static int DELAY = 3000;
+	
+	
+	public static boolean wasRecentlySilencedByApp(){
+		return recentlySilencedByApp;
+	}
+	
+	private static void resetFlag(){
+		mHandler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				recentlySilencedByApp = false;
+			}
+		}, DELAY);
+	}
 	
 	public static void mute(final Context context)
 	{
+		recentlySilencedByApp = true;
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_MEDIA, true)) audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
@@ -21,6 +42,7 @@ public class Audio {
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_RINGER, true)) audioManager.setStreamVolume(AudioManager.STREAM_RING, 0, 0);
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_VIBRATE, false)) audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
 		Toast.makeText(context, R.string.silencing_ringer, Toast.LENGTH_SHORT).show();
+		resetFlag();
 	}
 	
 	public static void restore(final Context context){
@@ -41,5 +63,10 @@ public class Audio {
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_RINGER, true)) audioManager.setStreamVolume(AudioManager.STREAM_RING, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_RING) * percentage), 0);
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_VIBRATE, false)) audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 		Toast.makeText(context, R.string.restoring_ringer, Toast.LENGTH_SHORT).show();
+	}
+	
+	public static boolean isVolumnSilenced(final Context context){
+		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+		return AudioManager.RINGER_MODE_NORMAL != audioManager.getRingerMode();
 	}
 }

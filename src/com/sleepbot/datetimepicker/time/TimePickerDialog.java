@@ -15,14 +15,19 @@ package com.sleepbot.datetimepicker.time;
  * limitations under the License
  */
 
+import java.text.DateFormatSymbols;
+import java.util.ArrayList;
+import java.util.Locale;
+
 import android.animation.ObjectAnimator;
 import android.app.ActionBar.LayoutParams;
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.v4.app.DialogFragment;
-import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.method.TransformationMethod;
 import android.util.Log;
 import android.view.KeyCharacterMap;
@@ -36,12 +41,8 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.potter.silencer.R;
 import com.fourmob.datetimepicker.Utils;
-
-import java.text.DateFormatSymbols;
-import java.util.ArrayList;
-import java.util.Locale;
+import com.potter.silencer.R;
 
 /**
  * Dialog to set a time.
@@ -967,4 +968,13 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
             return false;
         }
     }
+
+	@Override
+	public void onDismiss(DialogInterface dialog) {
+		super.onDismiss(dialog);
+		Activity activity = getActivity();
+		if(activity != null) {
+			activity.finish();
+		}
+	}
 }

@@ -21,7 +21,8 @@ public class CalendarSyncAsyncTask extends AsyncTask<String, Void, Void> {
 	}
 	
 	@Override
-	protected Void doInBackground(String... action) {
+	protected Void doInBackground(String... actions) {
+		String action = actions[0];
 		if(CANCEL_ALARMS.equals(action) || CANCEL_CREATE_ALARMS.equals(action)){
 			mCalendarManager.cancelAllCurrentAlarms();
 		}

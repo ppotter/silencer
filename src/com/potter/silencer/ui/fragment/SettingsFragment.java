@@ -67,6 +67,8 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 			setVolumeRestoreLevelSummary(sharedPreferences.getInt(KEY_PREF_VOLUME_RESTORE_LEVEL, 8));
 		} else if(key.equals(KEY_PREF_SILENCE_CALENDAR_EVENT)) {
 			if(sharedPreferences.getBoolean(KEY_PREF_SILENCE_CALENDAR_EVENT, false)){
+				new CalendarSyncAsyncTask(getActivity()).execute(CalendarSyncAsyncTask.CANCEL_CREATE_ALARMS);
+			} else {
 				new CalendarSyncAsyncTask(getActivity()).execute(CalendarSyncAsyncTask.CANCEL_ALARMS);
 			}
 		}
