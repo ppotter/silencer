@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:key="pref_key_vibrate"
-        android:title="@string/vibrate"
-        android:summary="@string/vibrate_summary"
-        android:defaultValue="false" />
-    <CheckBoxPreference
-        android:key="pref_key_military"
-        android:title="@string/military"
-        android:defaultValue="false" />
+    <PreferenceCategory
+        android:title="@string/calendar_event_general">
+	    <CheckBoxPreference
+	        android:key="pref_key_vibrate"
+	        android:title="@string/vibrate"
+	        android:summary="@string/vibrate_summary"
+	        android:defaultValue="false" />
+	    <CheckBoxPreference
+	        android:key="pref_key_military"
+	        android:title="@string/military"
+	        android:defaultValue="false" />
+    </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/calendar_event_preferences"
         android:key="pref_key_calendar_event">

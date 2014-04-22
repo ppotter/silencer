@@ -17,9 +17,9 @@ public class SilencedNotificationFactory {
 
 	public static Notification newInstance(Context context, int hour, int minute){
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-		.setSmallIcon(R.drawable.ic_launcher)
+		.setSmallIcon(R.drawable.ic_launcher_lite)
 		.setContentText(context.getString(R.string.notification_click_to_restore))
-		.setContentIntent(AlarmFactory.newInstance(context).prepareEndIntent());
+		.setContentIntent(AlarmFactory.newInstance(context).prepareIntent(AlarmFactory.ACTION_END_TEMPORARY_SILENCE));
 		if(hour > 0 || minute > 0){
 			String formattedMinute = String.valueOf(((minute < 10) ? "0" + minute : minute));
 			if(isMilitaryPrefered(context)){

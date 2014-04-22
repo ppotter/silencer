@@ -20,13 +20,14 @@ public class SilencerBroadcastReceiver extends BroadcastReceiver{
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.i(this.getClass().getCanonicalName(), "Received calendar event");
-		if(intent.getAction().equals(AlarmFactory.ACTION_START_SILENCE)){
+		
+		if(intent.getAction().equals(AlarmFactory.ACTION_START_EVENT_SILENCE) || intent.getAction().equals(AlarmFactory.ACTION_START_TEMPORARY_SILENCE)){
 			Audio.mute(context);
 			NotificationManager notifiationManager = (NotificationManager) context.getSystemService(Activity.NOTIFICATION_SERVICE);
 			Calendar calendar = GregorianCalendar.getInstance(); 
 			calendar.setTime(new Date());  
 			notifiationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.newInstance(context, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.HOUR)));
-		} else if (intent.getAction().equals(AlarmFactory.ACTION_END_SILENCE)){
+		} else if (intent.getAction().equals(AlarmFactory.ACTION_END_EVENT_SILENCE) || intent.getAction().equals(AlarmFactory.ACTION_END_TEMPORARY_SILENCE)){
 			Audio.restore(context);
 			SilencedNotificationFactory.cancelNotification(context);
 		} else {

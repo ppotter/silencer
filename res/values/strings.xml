@@ -44,6 +44,7 @@
     <string name="preference_dialog_positive">Set</string>
     <string name="preference_dialog_negative">Cancel</string>
     
+    <string name="calendar_event_general">General preferences</string>
     <string name="calendar_event_preferences">Calendar event preferences</string>
     <string name="silence_long_events">Long events preferences</string>
     <string name="silence_day_long_events">Ignore long events</string>

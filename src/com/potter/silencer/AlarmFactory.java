@@ -17,8 +17,10 @@ public class AlarmFactory {
 
 	private static final long ALARM_BUFFER = 1000;
 	
-	public static final String ACTION_START_SILENCE = "com.potter.silencer.ACTION_START_SILENCE";
-	public static final String ACTION_END_SILENCE = "com.potter.silencer.ACTION_END_SILENCE";
+	public static final String ACTION_START_EVENT_SILENCE = "com.potter.silencer.ACTION_START_EVENT_SILENCE";
+	public static final String ACTION_START_TEMPORARY_SILENCE = "com.potter.silencer.ACTION_START_TEMPORARY_SILENCE";
+	public static final String ACTION_END_EVENT_SILENCE = "com.potter.silencer.ACTION_END_EVENT_SILENCE";
+	public static final String ACTION_END_TEMPORARY_SILENCE = "com.potter.silencer.ACTION_END_TEMPORARY_SILENCE";
 
 	public static final String EXTRA_INSTANCE_ID = "com.potter.silencer.EXTRA_INSTANCE_ID";
 
@@ -62,32 +64,19 @@ public class AlarmFactory {
 		return cancelAlarm(new CalendarEventInstance(cursor));
 	}
 
-	public PendingIntent prepareStartIntent(final CalendarEventInstance instance) {
-		Intent startIntent = new Intent(ACTION_START_SILENCE, null, mContext, SilencerBroadcastReceiver.class);
-		startIntent.putExtra(EXTRA_INSTANCE_ID, instance.getId());
-		PendingIntent startAlarmIntent = PendingIntent.getBroadcast(mContext, 0, startIntent, 0);
-		return startAlarmIntent;
+	public PendingIntent prepareIntent(String action, final CalendarEventInstance instance) {
+		return prepareIntent(action, instance.getId());
 	}
 
-	public PendingIntent prepareEndIntent(final CalendarEventInstance instance) {
-		Intent endIntent = new Intent(ACTION_END_SILENCE, null, mContext, SilencerBroadcastReceiver.class);
-		endIntent.putExtra(EXTRA_INSTANCE_ID, instance.getId());
-		PendingIntent endAlarmIntent = PendingIntent.getBroadcast(mContext, 0, endIntent, 0);
-		return endAlarmIntent;
-	}
-
-	public PendingIntent prepareStartIntent() {
-		Intent startIntent = new Intent(ACTION_START_SILENCE, null, mContext, SilencerBroadcastReceiver.class);
-		startIntent.putExtra(EXTRA_INSTANCE_ID, -1);
-		PendingIntent startAlarmIntent = PendingIntent.getBroadcast(mContext, 0, startIntent, 0);
-		return startAlarmIntent;
+	public PendingIntent prepareIntent(String action){
+		return prepareIntent(action, -1);
 	}
 	
-	public PendingIntent prepareEndIntent(){
-		Intent endIntent = new Intent(ACTION_END_SILENCE, null, mContext, SilencerBroadcastReceiver.class);
-		endIntent.putExtra(EXTRA_INSTANCE_ID, -1);
-		PendingIntent endAlarmIntent = PendingIntent.getBroadcast(mContext, 0, endIntent, 0);
-		return endAlarmIntent;
+	private PendingIntent prepareIntent(String action, long instanceId){
+		Intent intent = new Intent(action, null, mContext, SilencerBroadcastReceiver.class);
+		intent.putExtra(EXTRA_INSTANCE_ID, instanceId);
+		PendingIntent startAlarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, 0);
+		return startAlarmIntent;
 	}
 
 	public AlarmFactory createAlarm(final CalendarEventInstance instance) {
@@ -98,20 +87,20 @@ public class AlarmFactory {
 		long eventLength = instance.getEnd() - instance.getBegin();
 		
 		if(eventLength < maxLength){
-			getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin() - ALARM_BUFFER, prepareStartIntent(instance));
-			getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd() + ALARM_BUFFER, prepareEndIntent(instance));
+			getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin() - ALARM_BUFFER, prepareIntent(ACTION_START_EVENT_SILENCE, instance));
+			getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd() + ALARM_BUFFER, prepareIntent(ACTION_END_EVENT_SILENCE, instance));
 		}
 		
 		return this;
 	}
 	
 	public AlarmFactory createBeginAlarm(long milliseconds){
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds - ALARM_BUFFER, prepareStartIntent());
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds - ALARM_BUFFER, prepareIntent(ACTION_START_TEMPORARY_SILENCE));
 		return this;
 	}
 	
 	public AlarmFactory createEndAlarm(long milliseconds){
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds + ALARM_BUFFER, prepareEndIntent());
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds + ALARM_BUFFER, prepareIntent(ACTION_END_TEMPORARY_SILENCE));
 		return this;
 	}
 	
@@ -120,8 +109,8 @@ public class AlarmFactory {
 	}
 	
 	public AlarmFactory cancelAlarm(final CalendarEventInstance instance) {
-		getAlarmManager().cancel(prepareStartIntent(instance));
-		getAlarmManager().cancel(prepareEndIntent(instance));
+		getAlarmManager().cancel(prepareIntent(ACTION_START_EVENT_SILENCE, instance));
+		getAlarmManager().cancel(prepareIntent(ACTION_END_EVENT_SILENCE, instance));
 		return this;
 	}
 
