@@ -26,6 +26,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	
 	public static final String DEFAULT_PREF_LONG_EVENTS_LENGTH = "23:00";
 	public static final Integer DEFAULT_VOLUME_RESTORE_LEVEL = 8;
+	public static final Boolean DEFAULT_LONG_EVENTS_ENABLED = true;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		setVolumeRestoreLevelSummary(preferences.getInt(KEY_PREF_VOLUME_RESTORE_LEVEL, DEFAULT_VOLUME_RESTORE_LEVEL));
 		setLongEventsLengthSummary(preferences.getString(KEY_PREF_LONG_EVENTS_LENGTH, DEFAULT_PREF_LONG_EVENTS_LENGTH),
-				preferences.getBoolean(KEY_PREF_LONG_EVENTS_ENABLED, true));
+				preferences.getBoolean(KEY_PREF_LONG_EVENTS_ENABLED, DEFAULT_LONG_EVENTS_ENABLED));
 	}
 
 	
@@ -58,7 +59,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 		if(key.equals(KEY_PREF_LONG_EVENTS_ENABLED) || key.equals(KEY_PREF_LONG_EVENTS_LENGTH)) {
 			setLongEventsLengthSummary(sharedPreferences.getString(KEY_PREF_LONG_EVENTS_LENGTH, DEFAULT_PREF_LONG_EVENTS_LENGTH),
-					sharedPreferences.getBoolean(KEY_PREF_LONG_EVENTS_ENABLED, true));
+					sharedPreferences.getBoolean(KEY_PREF_LONG_EVENTS_ENABLED, DEFAULT_LONG_EVENTS_ENABLED));
 		} else if(key.equals(KEY_PREF_VOLUME_RESTORE_LEVEL)) {
 			setVolumeRestoreLevelSummary(sharedPreferences.getInt(KEY_PREF_VOLUME_RESTORE_LEVEL, 8));
 		} else if(key.equals(KEY_PREF_SILENCE_CALENDAR_EVENT)) {

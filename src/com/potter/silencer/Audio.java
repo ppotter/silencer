@@ -15,7 +15,7 @@ public class Audio {
 	public static volatile boolean recentlySilencedByApp = false;
 	
 	private static Handler mHandler = new Handler();
-	private static int DELAY = 3000;
+	private static int DELAY = 2000;
 	
 	
 	public static boolean wasRecentlySilencedByApp(){
