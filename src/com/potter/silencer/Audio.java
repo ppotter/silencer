@@ -57,11 +57,10 @@ public class Audio {
 	{
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
-//		audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM) * percentage), 0);
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_MEDIA, true)) audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) * percentage), 0);
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_NOTIFICATIONS, true)) audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION) * percentage), 0);
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_RINGER, true)) audioManager.setStreamVolume(AudioManager.STREAM_RING, (int)(audioManager.getStreamMaxVolume(AudioManager.STREAM_RING) * percentage), 0);
-		if(preferences.getBoolean(SettingsFragment.KEY_PREF_VIBRATE, false)) audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+		audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 		Toast.makeText(context, R.string.restoring_ringer, Toast.LENGTH_SHORT).show();
 	}
 	

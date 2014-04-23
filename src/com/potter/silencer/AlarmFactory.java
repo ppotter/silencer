@@ -23,6 +23,7 @@ public class AlarmFactory {
 	public static final String ACTION_END_TEMPORARY_SILENCE = "com.potter.silencer.ACTION_END_TEMPORARY_SILENCE";
 
 	public static final String EXTRA_INSTANCE_ID = "com.potter.silencer.EXTRA_INSTANCE_ID";
+	public static final String EXTRA_END_TIME = "com.potter.silencer.EXTRA_END_TIME";
 
 	private Context mContext;
 	private AlarmManager mAlarmManager;
@@ -65,16 +66,17 @@ public class AlarmFactory {
 	}
 
 	public PendingIntent prepareIntent(String action, final CalendarEventInstance instance) {
-		return prepareIntent(action, instance.getId());
+		return prepareIntent(action, instance.getId(), instance.getEnd());
 	}
 
 	public PendingIntent prepareIntent(String action){
-		return prepareIntent(action, -1);
+		return prepareIntent(action, -1, -1);
 	}
 	
-	private PendingIntent prepareIntent(String action, long instanceId){
+	private PendingIntent prepareIntent(String action, long instanceId, long alarmEndTime){
 		Intent intent = new Intent(action, null, mContext, SilencerBroadcastReceiver.class);
 		intent.putExtra(EXTRA_INSTANCE_ID, instanceId);
+		intent.putExtra(EXTRA_END_TIME, alarmEndTime);
 		PendingIntent startAlarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, 0);
 		return startAlarmIntent;
 	}
