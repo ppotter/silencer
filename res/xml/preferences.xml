@@ -20,9 +20,10 @@
             android:title="@string/silence_calendar_events"
             android:summary="@string/silence_calendar_events_summary"
             android:defaultValue="false" />
-	    <!-- <PreferenceCategory
-	        android:title="@string/silence_long_events"
-	        android:key="pref_key_long_events_category"> -->
+	    <CheckBoxPreference
+            android:key="pref_key_silence_all_day_events"
+            android:title="@string/silence_all_day_events"
+            android:defaultValue="true" />
 	    <CheckBoxPreference
 	        android:key="pref_key_long_events_enabled"
 	        android:title="@string/silence_day_long_events"

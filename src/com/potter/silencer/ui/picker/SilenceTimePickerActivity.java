@@ -85,11 +85,12 @@ public class SilenceTimePickerActivity extends FragmentActivity implements OnTim
 			long duration = timeSet.getTimeInMillis() - current.getTimeInMillis();
 			PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(KEY_PREF_DURATION, duration).commit();
 			notificationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.getInstance().get(SilenceTimePickerActivity.this, timeSet.getTimeInMillis()));
+			finish();
+			return;
 		} else if(!Audio.isVolumnSilenced(this)){
 			Audio.mute(this);
-			notificationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.getInstance().get(SilenceTimePickerActivity.this, SilencedNotificationFactory.INDEFINITE_END_TIME));
 		}
-
+		notificationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.getInstance().get(SilenceTimePickerActivity.this, SilencedNotificationFactory.INDEFINITE_END_TIME));
 		finish();
 	}
 }

@@ -14,7 +14,8 @@ public class CalendarEventInstance implements Parcelable {
 		Instances.END_MINUTE,
 		Instances.START_DAY,
 		Instances.START_MINUTE,
-		Instances.EVENT_ID
+		Instances.EVENT_ID,
+		Instances.ALL_DAY
 	};
 	  
 	// The indices for the projection array above.
@@ -26,6 +27,7 @@ public class CalendarEventInstance implements Parcelable {
 	private static final int PROJECTION_START_DAY_INDEX = 5;
 	private static final int PROJECTION_START_MINUTE_INDEX = 6;
 	private static final int PROJECTION_EVENT_ID_INDEX = 7;
+	private static final int PROJECTION_ALL_DAY_INDEX = 8;
 	
 	private long id;
 	private long begin;
@@ -35,6 +37,7 @@ public class CalendarEventInstance implements Parcelable {
 	private int startDay;
 	private int startMinute;
 	private int eventId;
+	private int allDay;
 	
 	public CalendarEventInstance(){}
 
@@ -48,6 +51,7 @@ public class CalendarEventInstance implements Parcelable {
 	    startDay = cursor.getInt(PROJECTION_START_DAY_INDEX);
 	    startMinute = cursor.getInt(PROJECTION_START_MINUTE_INDEX);
 	    eventId = cursor.getInt(PROJECTION_EVENT_ID_INDEX);
+	    allDay = cursor.getInt(PROJECTION_ALL_DAY_INDEX);
 	}
 	
 	public CalendarEventInstance(Parcel in){
@@ -59,6 +63,7 @@ public class CalendarEventInstance implements Parcelable {
 		startDay = in.readInt();
 		startMinute = in.readInt();
 		eventId = in.readInt();
+		allDay = in.readInt();
 	}
 
 	@Override
@@ -76,6 +81,7 @@ public class CalendarEventInstance implements Parcelable {
 		dest.writeInt(startDay);
 		dest.writeInt(startMinute);
 		dest.writeInt(eventId);
+		dest.writeInt(allDay);
 	}
 	
 	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -150,5 +156,17 @@ public class CalendarEventInstance implements Parcelable {
 
 	public void setEventId(int eventId) {
 		this.eventId = eventId;
+	}
+	
+	public boolean isAllDay(){
+		return 1 == allDay;
+	}
+	
+	public int getAllDay(){
+		return allDay;
+	}
+	
+	public void setAllDay(int allDay){
+		this.allDay = allDay;
 	}
 }

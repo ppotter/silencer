@@ -14,8 +14,8 @@ public class Audio {
 
 	public static volatile boolean recentlySilencedByApp = false;
 	
-	private static Handler mHandler = new Handler();
 	private static int DELAY = 2000;
+	private static Handler sHandler = new Handler();
 	
 	
 	public static boolean wasRecentlySilencedByApp(){
@@ -23,7 +23,7 @@ public class Audio {
 	}
 	
 	private static void resetFlag(){
-		mHandler.postDelayed(new Runnable() {
+		sHandler.postDelayed(new Runnable() {
 			
 			@Override
 			public void run() {

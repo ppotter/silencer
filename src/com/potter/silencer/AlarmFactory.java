@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
+import android.provider.CalendarContract.Instances;
 
 import com.potter.silencer.model.CalendarEventInstance;
 import com.potter.silencer.receiver.AlarmSilencerBroadcastReceiver;
@@ -82,26 +83,9 @@ public class AlarmFactory {
 	}
 
 	public AlarmFactory createAlarm(final CalendarEventInstance instance) {
-		Date now = new Date();
-		if(now.getTime() > instance.getEnd()){
-			return this;
+		if(shouldCreateAlarm(instance)){
+			createAlarms(instance);
 		}
-		
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-		String time = preferences.getString(SettingsFragment.KEY_PREF_LONG_EVENTS_LENGTH, SettingsFragment.DEFAULT_PREF_LONG_EVENTS_LENGTH);
-		boolean shouldIgnoreLongEvents = preferences.getBoolean(SettingsFragment.KEY_PREF_LONG_EVENTS_ENABLED, SettingsFragment.DEFAULT_LONG_EVENTS_ENABLED);
-		
-		if(shouldIgnoreLongEvents){
-			long maxLength =  TimeDialogPreference.getMilliseconds(time);
-			long eventLength = instance.getEnd() - instance.getBegin();
-			
-			if(eventLength > maxLength){
-				//The event is too long and should be ignored per the user preference.
-				return this;
-			}
-		}
-		
-		createAlarms(instance);
 		return this;
 	}
 	
@@ -128,6 +112,34 @@ public class AlarmFactory {
 	private void createAlarms(final CalendarEventInstance instance){
 		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin() - ALARM_BUFFER, prepareIntent(ACTION_START_EVENT_SILENCE, instance));
 		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd() + ALARM_BUFFER, prepareIntent(ACTION_END_EVENT_SILENCE, instance));
+	}
+	
+	private boolean shouldCreateAlarm(CalendarEventInstance instance){
+		Date now = new Date();
+		if(now.getTime() > instance.getEnd()){
+			return false;
+		}
+		
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+		boolean shouldIgnoreAllDayEvents = preferences.getBoolean(SettingsFragment.KEY_PREF_SILENCE_ALL_DAY_EVENTS, SettingsFragment.DEFAULT_SILENCE_ALL_DAY_EVENTS_ENABLED);
+		
+		if(shouldIgnoreAllDayEvents && instance.isAllDay()){
+			return false;
+		}
+		
+		String time = preferences.getString(SettingsFragment.KEY_PREF_LONG_EVENTS_LENGTH, SettingsFragment.DEFAULT_PREF_LONG_EVENTS_LENGTH);
+		boolean shouldIgnoreLongEvents = preferences.getBoolean(SettingsFragment.KEY_PREF_LONG_EVENTS_ENABLED, SettingsFragment.DEFAULT_LONG_EVENTS_ENABLED);
+		if(shouldIgnoreLongEvents){
+			long maxLength =  TimeDialogPreference.getMilliseconds(time);
+			long eventLength = instance.getEnd() - instance.getBegin();
+			
+			if(eventLength > maxLength){
+				//The event is too long and should be ignored per the user preference.
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }

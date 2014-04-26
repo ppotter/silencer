@@ -49,6 +49,7 @@
     <string name="silence_long_events">Long events preferences</string>
     <string name="silence_day_long_events">Ignore long events</string>
     <string name="silence_events_longer_then">Ignore events longer then</string>
+    <string name="silence_all_day_events">Ignore all day events</string>
 
     <string name="silence_calendar_events">Silence calendar events</string>
     <string name="silence_calendar_events_summary">Volume will be silenced the duration of calendar events</string>
