@@ -1,8 +1,5 @@
 package com.potter.silencer.receiver;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -14,28 +11,34 @@ import com.potter.silencer.AlarmFactory;
 import com.potter.silencer.Audio;
 import com.potter.silencer.ui.notification.SilencedNotificationFactory;
 
-public class SilencerBroadcastReceiver extends BroadcastReceiver{
+public class AlarmSilencerBroadcastReceiver extends BroadcastReceiver{
+	
+	/**
+	 * Counter used to determine if volume should be unmuted, 
+	 * if multiple events have called to silence volume, 
+	 * volume wont be restored until all events have called to restore it.
+	 */
+	public static int silenceCount = 0;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.i(this.getClass().getCanonicalName(), "Received silencer event");
+		Log.i(this.getClass().getCanonicalName(), "Received Volume changed event");
 		
 		if(intent.getAction().equals(AlarmFactory.ACTION_START_EVENT_SILENCE) || intent.getAction().equals(AlarmFactory.ACTION_START_TEMPORARY_SILENCE)){
 			Log.i(this.getClass().getCanonicalName(), "Received start silence event");
-			Audio.mute(context);
-			NotificationManager notifiationManager = (NotificationManager) context.getSystemService(Activity.NOTIFICATION_SERVICE);
-			if(intent.hasExtra(AlarmFactory.EXTRA_END_TIME)){
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(new Date(intent.getLongExtra(AlarmFactory.EXTRA_END_TIME, new Date().getTime())));
-				notifiationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.newInstance(context, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE)));
-			} else {
-				//TODO Better handling for potential misses on end time.
-				notifiationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.newInstance(context, -1, -1));
+			silenceCount++;
+			if(!Audio.isVolumnSilenced(context)){
+				Audio.mute(context);
+				NotificationManager notifiationManager = (NotificationManager) context.getSystemService(Activity.NOTIFICATION_SERVICE);
+				notifiationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.getInstance().get(context, intent.getLongExtra(AlarmFactory.EXTRA_END_TIME, SilencedNotificationFactory.INDEFINITE_END_TIME)));
 			}
 		} else if (intent.getAction().equals(AlarmFactory.ACTION_END_EVENT_SILENCE) || intent.getAction().equals(AlarmFactory.ACTION_END_TEMPORARY_SILENCE)){
 			Log.i(this.getClass().getCanonicalName(), "Received end silence event");
-			Audio.restore(context);
-			SilencedNotificationFactory.cancelNotification(context);
+			silenceCount--;
+			if(Audio.isVolumnSilenced(context) && silenceCount < 1){
+				Audio.restore(context);
+				SilencedNotificationFactory.getInstance().cancelNotification(context);
+			}
 		} else {
 			Log.i(this.getClass().getCanonicalName(), String.format("Unknown intent action: %", intent.getAction()));
 		}

@@ -1,4 +1,4 @@
-package com.potter.silencer.ui.activity;
+package com.potter.silencer.ui.picker;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -71,6 +71,7 @@ public class SilenceTimePickerActivity extends FragmentActivity implements OnTim
 
 	@Override
 	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+		NotificationManager notificationManager = (NotificationManager) getSystemService(Activity.NOTIFICATION_SERVICE);
 		if(hourOfDay > 0 && minute > 0) {
 			
 			//if an actual value as selected and the done button pressed.
@@ -83,14 +84,12 @@ public class SilenceTimePickerActivity extends FragmentActivity implements OnTim
 			AlarmFactory.newInstance(this).createEndAlarm(timeSet.getTimeInMillis());
 			long duration = timeSet.getTimeInMillis() - current.getTimeInMillis();
 			PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(KEY_PREF_DURATION, duration).commit();
+			notificationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.getInstance().get(SilenceTimePickerActivity.this, timeSet.getTimeInMillis()));
+		} else if(!Audio.isVolumnSilenced(this)){
+			Audio.mute(this);
+			notificationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.getInstance().get(SilenceTimePickerActivity.this, SilencedNotificationFactory.INDEFINITE_END_TIME));
 		}
 
-		if(!Audio.isVolumnSilenced(this)){
-			Audio.mute(this);
-		}
-		
-		NotificationManager notificationManager = (NotificationManager) getSystemService(Activity.NOTIFICATION_SERVICE);
-		notificationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.newInstance(this, hourOfDay, minute));
 		finish();
 	}
 }

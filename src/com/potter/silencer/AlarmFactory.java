@@ -11,13 +11,13 @@ import android.database.Cursor;
 import android.preference.PreferenceManager;
 
 import com.potter.silencer.model.CalendarEventInstance;
-import com.potter.silencer.receiver.SilencerBroadcastReceiver;
-import com.potter.silencer.ui.fragment.SettingsFragment;
+import com.potter.silencer.receiver.AlarmSilencerBroadcastReceiver;
 import com.potter.silencer.ui.preference.TimeDialogPreference;
+import com.potter.silencer.ui.settings.SettingsFragment;
 
 public class AlarmFactory {
 
-	private static final long ALARM_BUFFER = 1000;
+	private static final long ALARM_BUFFER = 5000;
 	
 	public static final String ACTION_START_EVENT_SILENCE = "com.potter.silencer.ACTION_START_EVENT_SILENCE";
 	public static final String ACTION_START_TEMPORARY_SILENCE = "com.potter.silencer.ACTION_START_TEMPORARY_SILENCE";
@@ -68,19 +68,17 @@ public class AlarmFactory {
 	}
 
 	public PendingIntent prepareIntent(final String action, final CalendarEventInstance instance) {
-		return prepareIntent(action, instance.getId(), instance.getEnd());
+		return prepareIntent(action, instance.getEnd());
 	}
 
 	public PendingIntent prepareIntent(String action){
-		return prepareIntent(action, -1, -1);
+		return prepareIntent(action, -1);
 	}
 	
-	private PendingIntent prepareIntent(String action, final long instanceId, final long alarmEndTime){
-		Intent intent = new Intent(action, null, mContext, SilencerBroadcastReceiver.class);
-		intent.putExtra(EXTRA_INSTANCE_ID, instanceId);
+	private PendingIntent prepareIntent(String action, final long alarmEndTime){
+		Intent intent = new Intent(action, null, mContext, AlarmSilencerBroadcastReceiver.class);
 		intent.putExtra(EXTRA_END_TIME, alarmEndTime);
-		PendingIntent startAlarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, 0);
-		return startAlarmIntent;
+		return PendingIntent.getBroadcast(mContext, 0, intent, 0);
 	}
 
 	public AlarmFactory createAlarm(final CalendarEventInstance instance) {

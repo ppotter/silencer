@@ -16,7 +16,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.potter.silencer.ui.activity.SettingsActivity"
+            android:name="com.potter.silencer.ui.settings.SettingsActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,12 +25,12 @@
         </activity>
         
         <activity
-            android:name="com.potter.silencer.ui.activity.SilenceTimePickerActivity" 
+            android:name="com.potter.silencer.ui.picker.SilenceTimePickerActivity" 
             android:noHistory="true"
             android:theme="@style/Theme.Transparent"
             android:excludeFromRecents="true"/>
         
-        <receiver android:name="com.potter.silencer.receiver.SilencerBroadcastReceiver" 
+        <receiver android:name="com.potter.silencer.receiver.AlarmSilencerBroadcastReceiver" 
             android:enabled="true" />
         <receiver android:name="com.potter.silencer.receiver.CalendarChangedBroadcastReceiver" 
             android:enabled="true">

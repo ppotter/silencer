@@ -151,5 +151,4 @@ public class CalendarEventInstance implements Parcelable {
 	public void setEventId(int eventId) {
 		this.eventId = eventId;
 	}
-
 }

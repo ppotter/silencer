@@ -7,8 +7,8 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import com.potter.silencer.ui.fragment.SettingsFragment;
 import com.potter.silencer.ui.preference.VolumeNumberPickerPreference;
+import com.potter.silencer.ui.settings.SettingsFragment;
 
 public class Audio {
 

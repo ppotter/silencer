@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TimePicker;
 
 import com.potter.silencer.R;
-import com.potter.silencer.ui.fragment.SettingsFragment;
+import com.potter.silencer.ui.settings.SettingsFragment;
 
 public class TimeDialogPreference extends DialogPreference {
 	private int lastHour = 23;

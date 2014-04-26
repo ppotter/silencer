@@ -13,7 +13,7 @@ import android.provider.CalendarContract.Instances;
 
 import com.potter.silencer.AlarmFactory;
 import com.potter.silencer.model.CalendarEventInstance;
-import com.potter.silencer.ui.fragment.SettingsFragment;
+import com.potter.silencer.ui.settings.SettingsFragment;
 
 public class CalendarManager {
 	
@@ -44,7 +44,6 @@ public class CalendarManager {
 			calendar.add(Calendar.DATE, -1);
 			uri = ContentUris.withAppendedId(uri, calendar.getTimeInMillis());//start
 			
-			
 			calendar = Calendar.getInstance();
 			calendar.add(Calendar.YEAR, 1);
 			uri = ContentUris.withAppendedId(uri, calendar.getTimeInMillis());//end
@@ -52,10 +51,10 @@ public class CalendarManager {
 			
 			String selection = null;
 			String[] selectionArgs = null;
-			
+			String sortBy = Instances.END + " ASC";
 			cursor = contentResolver.query(uri,
 					CalendarEventInstance.EVENT_PROJECTION, selection,
-					selectionArgs, null);
+					selectionArgs, sortBy);
 			
 			getAlarmFactory().createAlarms(cursor);
 		}

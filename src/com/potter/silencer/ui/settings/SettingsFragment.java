@@ -1,4 +1,4 @@
-package com.potter.silencer.ui.fragment;
+package com.potter.silencer.ui.settings;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;

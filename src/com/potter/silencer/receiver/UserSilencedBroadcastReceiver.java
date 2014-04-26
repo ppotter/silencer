@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.media.AudioManager;
 
 import com.potter.silencer.Audio;
-import com.potter.silencer.ui.activity.SilenceTimePickerActivity;
 import com.potter.silencer.ui.notification.SilencedNotificationFactory;
+import com.potter.silencer.ui.picker.SilenceTimePickerActivity;
 
 public class UserSilencedBroadcastReceiver extends BroadcastReceiver {
-
+	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
@@ -18,8 +18,10 @@ public class UserSilencedBroadcastReceiver extends BroadcastReceiver {
 			Intent i = new Intent(context, SilenceTimePickerActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(i);
-		} else {
-			SilencedNotificationFactory.cancelNotification(context);
+			AlarmSilencerBroadcastReceiver.silenceCount++;
+		} else if(audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL){
+			SilencedNotificationFactory.getInstance().cancelNotification(context);
+			AlarmSilencerBroadcastReceiver.silenceCount--;
 		}
 	}
 
