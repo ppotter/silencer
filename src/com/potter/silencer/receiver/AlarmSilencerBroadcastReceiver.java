@@ -27,17 +27,17 @@ public class AlarmSilencerBroadcastReceiver extends BroadcastReceiver{
 		if(intent.getAction().equals(AlarmFactory.ACTION_START_EVENT_SILENCE) || intent.getAction().equals(AlarmFactory.ACTION_START_TEMPORARY_SILENCE)){
 			Log.i(this.getClass().getCanonicalName(), "Received start silence event");
 			silenceCount++;
+			NotificationManager notifiationManager = (NotificationManager) context.getSystemService(Activity.NOTIFICATION_SERVICE);
+			notifiationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.getInstance().get(context, intent.getLongExtra(AlarmFactory.EXTRA_END_TIME, SilencedNotificationFactory.INDEFINITE_END_TIME)));
 			if(!Audio.isVolumnSilenced(context)){
 				Audio.mute(context);
-				NotificationManager notifiationManager = (NotificationManager) context.getSystemService(Activity.NOTIFICATION_SERVICE);
-				notifiationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.getInstance().get(context, intent.getLongExtra(AlarmFactory.EXTRA_END_TIME, SilencedNotificationFactory.INDEFINITE_END_TIME)));
 			}
 		} else if (intent.getAction().equals(AlarmFactory.ACTION_END_EVENT_SILENCE) || intent.getAction().equals(AlarmFactory.ACTION_END_TEMPORARY_SILENCE)){
 			Log.i(this.getClass().getCanonicalName(), "Received end silence event");
 			silenceCount--;
+			SilencedNotificationFactory.getInstance().cancelNotification(context);
 			if(Audio.isVolumnSilenced(context) && silenceCount < 1){
 				Audio.restore(context);
-				SilencedNotificationFactory.getInstance().cancelNotification(context);
 			}
 		} else {
 			Log.i(this.getClass().getCanonicalName(), String.format("Unknown intent action: %", intent.getAction()));

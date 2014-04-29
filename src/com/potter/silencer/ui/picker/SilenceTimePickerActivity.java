@@ -47,7 +47,6 @@ public class SilenceTimePickerActivity extends FragmentActivity implements OnTim
 		time.add(Calendar.HOUR_OF_DAY, (int) TimeUnit.MILLISECONDS.toHours(duration));
 		time.add(Calendar.MINUTE, (int) TimeUnit.MILLISECONDS.toMinutes(duration) % 60);
 		
-		
 		timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
 		timePickerDialog.setOnTimeSetListener(this);
 		timePickerDialog.setStartTime(time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));

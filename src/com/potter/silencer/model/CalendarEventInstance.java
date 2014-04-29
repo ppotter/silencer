@@ -37,6 +37,7 @@ public class CalendarEventInstance implements Parcelable {
 	private int startDay;
 	private int startMinute;
 	private int eventId;
+	private String duration;
 	private int allDay;
 	
 	public CalendarEventInstance(){}
@@ -81,6 +82,7 @@ public class CalendarEventInstance implements Parcelable {
 		dest.writeInt(startDay);
 		dest.writeInt(startMinute);
 		dest.writeInt(eventId);
+		dest.writeString(duration);
 		dest.writeInt(allDay);
 	}
 	
