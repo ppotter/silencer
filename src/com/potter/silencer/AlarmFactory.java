@@ -1,7 +1,5 @@
 package com.potter.silencer;
 
-import java.util.Date;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -19,15 +17,6 @@ public class AlarmFactory {
 
 	private static final long ALARM_BUFFER = 5000;
 	
-	public static final String ACTION_START_EVENT_SILENCE = "com.potter.silencer.ACTION_START_EVENT_SILENCE";
-	public static final String ACTION_START_TEMPORARY_SILENCE = "com.potter.silencer.ACTION_START_TEMPORARY_SILENCE";
-	public static final String ACTION_END_EVENT_SILENCE = "com.potter.silencer.ACTION_END_EVENT_SILENCE";
-	public static final String ACTION_END_TEMPORARY_SILENCE = "com.potter.silencer.ACTION_END_TEMPORARY_SILENCE";
-	public static final String ACTION_END_SILENCE_ABSOLUTE = "com.potter.silencer.ACTION_END_SILENCE_ABSOLUTE";
-
-	public static final String EXTRA_INSTANCE_ID = "com.potter.silencer.EXTRA_INSTANCE_ID";
-	public static final String EXTRA_END_TIME = "com.potter.silencer.EXTRA_END_TIME";
-
 	private final Context mContext;
 	private AlarmManager mAlarmManager;
 	
@@ -78,8 +67,8 @@ public class AlarmFactory {
 	
 	private PendingIntent prepareIntent(String action, final long eventId, final long alarmEndTime){
 		Intent intent = new Intent(action, null, mContext, AlarmSilencerBroadcastReceiver.class);
-		intent.putExtra(EXTRA_END_TIME, alarmEndTime);
-		intent.putExtra(EXTRA_INSTANCE_ID, eventId);
+		intent.putExtra(AlarmSilencerBroadcastReceiver.EXTRA_END_TIME, alarmEndTime);
+		intent.putExtra(AlarmSilencerBroadcastReceiver.EXTRA_INSTANCE_ID, eventId);
 		return PendingIntent.getBroadcast(mContext, 0, intent, 0);
 	}
 	
@@ -91,12 +80,12 @@ public class AlarmFactory {
 	}
 	
 	public AlarmFactory createBeginAlarm(long milliseconds){
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds - ALARM_BUFFER, prepareIntent(ACTION_START_TEMPORARY_SILENCE));
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds - ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_START_TEMPORARY_SILENCE));
 		return this;
 	}
 	
 	public AlarmFactory createEndAlarm(long milliseconds){
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds + ALARM_BUFFER, prepareIntent(ACTION_END_TEMPORARY_SILENCE));
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds + ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_TEMPORARY_SILENCE));
 		return this;
 	}
 	
@@ -105,14 +94,14 @@ public class AlarmFactory {
 	}
 	
 	public AlarmFactory cancelAlarm(final CalendarEventInstance instance) {
-		getAlarmManager().cancel(prepareIntent(ACTION_START_EVENT_SILENCE, instance));
-		getAlarmManager().cancel(prepareIntent(ACTION_END_EVENT_SILENCE, instance));
+		getAlarmManager().cancel(prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_START_EVENT_SILENCE, instance));
+		getAlarmManager().cancel(prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_EVENT_SILENCE, instance));
 		return this;
 	}
 	
 	private void createBeginAndEndAlarm(final CalendarEventInstance instance){
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin() - ALARM_BUFFER, prepareIntent(ACTION_START_EVENT_SILENCE, instance));
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd() + ALARM_BUFFER, prepareIntent(ACTION_END_EVENT_SILENCE, instance));
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin() - ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_START_EVENT_SILENCE, instance));
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd() + ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_EVENT_SILENCE, instance));
 	}
 	
 	private boolean shouldCreateAlarm(CalendarEventInstance instance){

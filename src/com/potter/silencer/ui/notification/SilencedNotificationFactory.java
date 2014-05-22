@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.potter.silencer.AlarmFactory;
 import com.potter.silencer.R;
+import com.potter.silencer.receiver.AlarmSilencerBroadcastReceiver;
 import com.potter.silencer.ui.settings.SettingsFragment;
 
 
@@ -78,7 +79,7 @@ public class SilencedNotificationFactory {
 		String formattedAmPm = context.getResources().getString((amPm == Calendar.AM) ? R.string.time_am : R.string.time_pm);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher_lite)
-		.setContentIntent(AlarmFactory.newInstance(context).prepareIntent(AlarmFactory.ACTION_END_TEMPORARY_SILENCE))
+		.setContentIntent(AlarmFactory.newInstance(context).prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_TEMPORARY_SILENCE))
 		.setContentText(context.getString(R.string.notification_click_to_restore))
 		.setContentTitle(context.getString(stringId, hour, formattedMinute, formattedAmPm));
 		Notification notification = builder.build();
@@ -97,7 +98,7 @@ public class SilencedNotificationFactory {
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher_lite)
 		.setContentIntent(AlarmFactory.newInstance(context)
-		.prepareIntent(AlarmFactory.ACTION_END_TEMPORARY_SILENCE))
+		.prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_TEMPORARY_SILENCE))
 		.setContentTitle(context.getString(stringId));
 		Notification notification = builder.build();
 		notification.flags = Notification.FLAG_AUTO_CANCEL;

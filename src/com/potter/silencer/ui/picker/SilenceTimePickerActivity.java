@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
@@ -12,6 +13,7 @@ import android.view.KeyEvent;
 
 import com.potter.silencer.AlarmFactory;
 import com.potter.silencer.Audio;
+import com.potter.silencer.service.SilenceHandlerService;
 import com.potter.silencer.ui.notification.SilencedNotificationFactory;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -80,7 +82,11 @@ public class SilenceTimePickerActivity extends FragmentActivity implements OnTim
 			if(timeSet.getTimeInMillis() < current.getTimeInMillis())
 				timeSet.add(Calendar.DAY_OF_YEAR, 1);
 
-			AlarmFactory.newInstance(this).createEndAlarm(timeSet.getTimeInMillis());
+//			AlarmFactory.newInstance(this).createEndAlarm(timeSet.getTimeInMillis());
+			Intent intent = new Intent(SilenceHandlerService.ACTION_CREATE_ALARM, null, this, SilenceHandlerService.class);
+			intent.putExtra(SilenceHandlerService.EXTRA_END_TIME, timeSet.getTimeInMillis());
+			sendBroadcast(intent);
+			
 			long duration = timeSet.getTimeInMillis() - current.getTimeInMillis();
 			PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(KEY_PREF_DURATION, duration).commit();
 			notificationManager.notify(SilencedNotificationFactory.NOTIFICATION_ID, SilencedNotificationFactory.getInstance().get(SilenceTimePickerActivity.this, timeSet.getTimeInMillis()));
