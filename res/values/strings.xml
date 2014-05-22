@@ -37,6 +37,10 @@
     <string name="notification_silenced_until_military">Silenced until: %1$s:%2$s</string>
     <string name="notification_silenced_indefinitely">Ringer silenced indefinitely</string>
     <string name="notification_click_to_restore">Click to restore volume</string>
+
+    <string name="service_notification_text">Calendar Event Silencing</string>
+    <string name="service_notification_text_sub_enabled">Enabled</string>
+    <string name="service_notification_text_sub_disabled">Disabled</string>
     
     <string name="silencing_ringer">Silencing ringer</string>
     <string name="restoring_ringer">Restoring ringer</string>

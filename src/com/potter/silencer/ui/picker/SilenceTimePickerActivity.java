@@ -85,7 +85,7 @@ public class SilenceTimePickerActivity extends FragmentActivity implements OnTim
 //			AlarmFactory.newInstance(this).createEndAlarm(timeSet.getTimeInMillis());
 			Intent intent = new Intent(SilenceHandlerService.ACTION_CREATE_ALARM, null, this, SilenceHandlerService.class);
 			intent.putExtra(SilenceHandlerService.EXTRA_END_TIME, timeSet.getTimeInMillis());
-			sendBroadcast(intent);
+			startService(intent);
 			
 			long duration = timeSet.getTimeInMillis() - current.getTimeInMillis();
 			PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(KEY_PREF_DURATION, duration).commit();
