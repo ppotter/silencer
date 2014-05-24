@@ -74,15 +74,15 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 			setPreferenceEnabled(sharedPreferences, KEY_PREF_LONG_EVENTS_ENABLED, KEY_PREF_SILENCE_CALENDAR_EVENT);
 			setPreferenceEnabled(sharedPreferences, KEY_PREF_LONG_EVENTS_LENGTH, KEY_PREF_SILENCE_CALENDAR_EVENT);
 			if(sharedPreferences.getBoolean(KEY_PREF_SILENCE_CALENDAR_EVENT, false)){
-//				new CalendarSyncAsyncTask(getActivity()).execute(CalendarSyncAsyncTask.CANCEL_CREATE_ALARMS);
-				getActivity().startService(new Intent(SilenceHandlerService.ACTION_CANCEL_CREATE_ALARMS, null, getActivity(), SilenceHandlerService.class));
+				new CalendarSyncAsyncTask(getActivity()).execute(CalendarSyncAsyncTask.CANCEL_CREATE_ALARMS);
+//				getActivity().startService(new Intent(SilenceHandlerService.ACTION_CANCEL_CREATE_ALARMS, null, getActivity(), SilenceHandlerService.class));
 			} else {
-//				new CalendarSyncAsyncTask(getActivity()).execute(CalendarSyncAsyncTask.CANCEL_ALARMS);
-				getActivity().startService(new Intent(SilenceHandlerService.ACTION_CANCEL_ALARMS, null, getActivity(), SilenceHandlerService.class));
+				new CalendarSyncAsyncTask(getActivity()).execute(CalendarSyncAsyncTask.CANCEL_ALARMS);
+//				getActivity().startService(new Intent(SilenceHandlerService.ACTION_CANCEL_ALARMS, null, getActivity(), SilenceHandlerService.class));
 			}
 		} else if(key.equals(KEY_PREF_SILENCE_ALL_DAY_EVENTS)) {
-//			new CalendarSyncAsyncTask(getActivity()).execute(CalendarSyncAsyncTask.CANCEL_CREATE_ALARMS);
-			getActivity().startService(new Intent(SilenceHandlerService.ACTION_CANCEL_CREATE_ALARMS, null, getActivity(), SilenceHandlerService.class));
+			new CalendarSyncAsyncTask(getActivity()).execute(CalendarSyncAsyncTask.CANCEL_CREATE_ALARMS);
+//			getActivity().startService(new Intent(SilenceHandlerService.ACTION_CANCEL_CREATE_ALARMS, null, getActivity(), SilenceHandlerService.class));
 		}
 		
 	}

@@ -57,19 +57,15 @@ public class AlarmFactory {
 		return cancelAlarm(new CalendarEventInstance(cursor));
 	}
 
-	public PendingIntent prepareIntent(final String action, final CalendarEventInstance instance) {
-		return prepareIntent(action, instance.getId(), instance.getEnd());
-	}
-
 	public PendingIntent prepareIntent(String action){
 		return prepareIntent(action, -1, -1);
 	}
 	
-	private PendingIntent prepareIntent(String action, final long eventId, final long alarmEndTime){
+	public PendingIntent prepareIntent(String action, final long eventId, final long alarmEndTime){
 		Intent intent = new Intent(action, null, mContext, AlarmSilencerBroadcastReceiver.class);
 		intent.putExtra(AlarmSilencerBroadcastReceiver.EXTRA_END_TIME, alarmEndTime);
 		intent.putExtra(AlarmSilencerBroadcastReceiver.EXTRA_INSTANCE_ID, eventId);
-		return PendingIntent.getBroadcast(mContext, 0, intent, 0);
+		return PendingIntent.getBroadcast(mContext, (int)eventId, intent, 0);
 	}
 	
 	public AlarmFactory createAlarm(final CalendarEventInstance instance) {
@@ -94,14 +90,14 @@ public class AlarmFactory {
 	}
 	
 	public AlarmFactory cancelAlarm(final CalendarEventInstance instance) {
-		getAlarmManager().cancel(prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_START_EVENT_SILENCE, instance));
-		getAlarmManager().cancel(prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_EVENT_SILENCE, instance));
+		getAlarmManager().cancel(prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_START_EVENT_SILENCE, instance.getId(), instance.getEnd()));
+		getAlarmManager().cancel(prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_EVENT_SILENCE, -instance.getId(), instance.getEnd()));//pass end id as negative to differentiate request codes.
 		return this;
 	}
 	
 	private void createBeginAndEndAlarm(final CalendarEventInstance instance){
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin() - ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_START_EVENT_SILENCE, instance));
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd() + ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_EVENT_SILENCE, instance));
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin() - ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_START_EVENT_SILENCE, instance.getId(), instance.getEnd()));
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd() + ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_EVENT_SILENCE, -instance.getId(), instance.getEnd()));//pass end id as negative to differentiate request codes.
 	}
 	
 	private boolean shouldCreateAlarm(CalendarEventInstance instance){
