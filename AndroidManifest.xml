@@ -15,6 +15,7 @@
         android:icon="@drawable/ic_launcher_lite"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
         <activity
             android:name="com.potter.silencer.ui.settings.SettingsActivity"
             android:noHistory="true"
@@ -33,6 +34,7 @@
         
         <receiver android:name="com.potter.silencer.receiver.AlarmSilencerBroadcastReceiver" 
             android:enabled="true" />
+        
         <receiver android:name="com.potter.silencer.receiver.CalendarChangedBroadcastReceiver" 
             android:enabled="true">
             <intent-filter>
@@ -41,12 +43,19 @@
                 <data android:host="com.android.calendar" />
             </intent-filter>
         </receiver>
+        
         <receiver android:name="com.potter.silencer.receiver.UserSilencedBroadcastReceiver" 
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.media.RINGER_MODE_CHANGED" />
             </intent-filter>
         </receiver>
+        
+        <receiver android:name="com.potter.silencer.receiver.OnBootBroadcastReceiver">
+		    <intent-filter>
+		        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+		    </intent-filter>
+		</receiver>
         
         <service android:name="com.potter.silencer.service.SilenceHandlerService" />
     </application>
