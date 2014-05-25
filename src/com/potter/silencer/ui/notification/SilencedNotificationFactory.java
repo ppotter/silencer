@@ -59,6 +59,9 @@ public class SilencedNotificationFactory {
 		calendar.setTime(new Date(endTime));
 		boolean isMilitary = isMilitaryPrefered(context);
 		int hour = (isMilitary) ? calendar.get(Calendar.HOUR_OF_DAY) : calendar.get(Calendar.HOUR);
+		if(hour == 0){
+			hour = (isMilitary) ? 24 : 12;
+		}
 		int minute = calendar.get(Calendar.MINUTE);
 		int amPm = calendar.get(Calendar.AM_PM);
 		int stringId = (isMilitary) ? R.string.notification_silenced_until_military : R.string.notification_silenced_until;

@@ -71,7 +71,7 @@ public class SilenceTimePickerActivity extends FragmentActivity implements OnTim
 	@Override
 	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
 		NotificationManager notificationManager = (NotificationManager) getSystemService(Activity.NOTIFICATION_SERVICE);
-		if(hourOfDay > 0 && minute > 0) {
+		if(hourOfDay >= 0 && minute >= 0) {
 			
 			//if an actual value as selected and the done button pressed.
 			Calendar current = Calendar.getInstance(), timeSet = Calendar.getInstance();
