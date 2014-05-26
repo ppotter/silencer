@@ -3,11 +3,6 @@
     <PreferenceCategory
         android:title="@string/calendar_event_general">
 	    <CheckBoxPreference
-	        android:key="pref_key_vibrate"
-	        android:title="@string/vibrate"
-	        android:summary="@string/vibrate_summary"
-	        android:defaultValue="false" />
-	    <CheckBoxPreference
 	        android:key="pref_key_military"
 	        android:title="@string/military"
 	        android:defaultValue="false" />
@@ -15,6 +10,11 @@
     <PreferenceCategory
         android:title="@string/calendar_event_preferences"
         android:key="pref_key_calendar_event">
+	    <CheckBoxPreference
+	        android:key="pref_key_vibrate"
+	        android:title="@string/vibrate"
+	        android:summary="@string/vibrate_summary"
+	        android:defaultValue="true" />
 	    <CheckBoxPreference
             android:key="pref_key_silence_calendar_event"
             android:title="@string/silence_calendar_events"
@@ -54,6 +54,13 @@
             android:title="@string/volume_restore_level" 
             android:layout="@layout/right_align_summary_preference_item"/>
     </PreferenceCategory>
-    
-
+    <PreferenceCategory android:title="@string/app_name">
+	    <PreferenceScreen android:title="@string/license">
+		    <intent
+		        android:action="android.intent.action.MAIN"
+		        android:targetPackage="com.potter.silencer"
+		        android:targetClass="com.potter.silencer.ui.LicenseActivity"
+		        />
+	    </PreferenceScreen>
+    </PreferenceCategory>
 </PreferenceScreen>

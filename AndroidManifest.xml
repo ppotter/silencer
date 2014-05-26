@@ -32,6 +32,10 @@
             android:theme="@style/Theme.Transparent"
             android:excludeFromRecents="true"/>
         
+        <activity android:name="com.potter.silencer.ui.LicenseActivity"
+            android:noHistory="true"
+            android:label="@string/license" />
+        
         <receiver android:name="com.potter.silencer.receiver.AlarmSilencerBroadcastReceiver" 
             android:enabled="true" />
         
