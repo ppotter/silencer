@@ -18,11 +18,10 @@ public class UserSilencedBroadcastReceiver extends BroadcastReceiver {
 			Intent i = new Intent(context, SilenceTimePickerActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(i);
-			AlarmSilencerBroadcastReceiver.silenceCount++;
+			AlarmSilencerBroadcastReceiver.incrementSilenceCount(context);
 		} else if(audioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL){
 			SilencedNotificationFactory.getInstance().cancelNotification(context);
-			AlarmSilencerBroadcastReceiver.silenceCount--;
+			AlarmSilencerBroadcastReceiver.clearSilenceCount(context);
 		}
 	}
-
 }

@@ -22,7 +22,7 @@ public class Audio {
 		return recentlySilencedByApp;
 	}
 	
-	private static void resetFlag(){
+	private static void resetSilencedFlag(){
 		sHandler.postDelayed(new Runnable() {
 			
 			@Override
@@ -42,7 +42,7 @@ public class Audio {
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_RINGER, true)) audioManager.setStreamVolume(AudioManager.STREAM_RING, 0, 0);
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_VIBRATE, false)) audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
 		Toast.makeText(context, R.string.silencing_ringer, Toast.LENGTH_SHORT).show();
-		resetFlag();
+		resetSilencedFlag();
 	}
 	
 	public static void restore(final Context context){
