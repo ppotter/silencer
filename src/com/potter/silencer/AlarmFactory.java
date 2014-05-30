@@ -15,8 +15,6 @@ import com.potter.silencer.ui.settings.SettingsFragment;
 
 public class AlarmFactory {
 
-	private static final long ALARM_BUFFER = 5000;
-	
 	private final Context mContext;
 	private AlarmManager mAlarmManager;
 	
@@ -76,12 +74,12 @@ public class AlarmFactory {
 	}
 	
 	public AlarmFactory createBeginAlarm(long milliseconds){
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds - ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_START_TEMPORARY_SILENCE));
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_START_TEMPORARY_SILENCE));
 		return this;
 	}
 	
 	public AlarmFactory createEndAlarm(long milliseconds){
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds + ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_TEMPORARY_SILENCE));
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, milliseconds, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_TEMPORARY_SILENCE));
 		return this;
 	}
 	
@@ -96,8 +94,8 @@ public class AlarmFactory {
 	}
 	
 	private void createBeginAndEndAlarm(final CalendarEventInstance instance){
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin() - ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_START_EVENT_SILENCE, instance.getId(), instance.getEnd()));
-		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd() + ALARM_BUFFER, prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_EVENT_SILENCE, -instance.getId(), instance.getEnd()));//pass end id as negative to differentiate request codes.
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getBegin(), prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_START_EVENT_SILENCE, instance.getId(), instance.getEnd()));
+		getAlarmManager().set(AlarmManager.RTC_WAKEUP, instance.getEnd(), prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_EVENT_SILENCE, -instance.getId(), instance.getEnd()));//pass end id as negative to differentiate request codes.
 	}
 	
 	private boolean shouldCreateAlarm(CalendarEventInstance instance){

@@ -57,8 +57,6 @@ public class CalendarManager {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
 		if(preferences.getBoolean(SettingsFragment.KEY_PREF_SILENCE_CALENDAR_EVENT, false)){
-			Cursor cursor = null;
-			ContentResolver contentResolver = mContext.getContentResolver();
 			Uri uri = Instances.CONTENT_URI;
 			
 			Calendar calendar = Calendar.getInstance();
@@ -69,15 +67,37 @@ public class CalendarManager {
 			calendar.add(Calendar.YEAR, 1);
 			uri = ContentUris.withAppendedId(uri, calendar.getTimeInMillis());//end
 			
-			String selection = getSelection();
-			String[] selectionArgs = getSelectionArgs();
-			String sortBy = Instances.END + " ASC";
-			cursor = contentResolver.query(uri,
-					CalendarEventInstance.EVENT_PROJECTION, selection,
-					selectionArgs, sortBy);
-			
-			getAlarmFactory().createAlarms(cursor);
+			createAlarms(uri);
 		}
+		return this;
+	}
+	
+	public CalendarManager createAllFutureAlarms() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+		
+		if(preferences.getBoolean(SettingsFragment.KEY_PREF_SILENCE_CALENDAR_EVENT, false)){
+			Uri uri = Instances.CONTENT_URI;
+			
+			Calendar calendar = Calendar.getInstance();
+			uri = ContentUris.withAppendedId(uri, calendar.getTimeInMillis());//start
+			
+			calendar = Calendar.getInstance();
+			calendar.add(Calendar.YEAR, 1);
+			uri = ContentUris.withAppendedId(uri, calendar.getTimeInMillis());//end
+			
+			createAlarms(uri);
+		}
+		return this;
+	}
+	
+	private CalendarManager createAlarms(final Uri uri){
+		String selection = getSelection();
+		String[] selectionArgs = getSelectionArgs();
+		String sortBy = Instances.END + " ASC";
+		Cursor cursor = mContext.getContentResolver().query(uri,
+				CalendarEventInstance.EVENT_PROJECTION, selection,
+				selectionArgs, sortBy);
+		getAlarmFactory().createAlarms(cursor);
 		return this;
 	}
 	

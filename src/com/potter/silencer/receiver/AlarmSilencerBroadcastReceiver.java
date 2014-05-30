@@ -43,16 +43,16 @@ public class AlarmSilencerBroadcastReceiver extends BroadcastReceiver{
 			if(!Audio.isVolumnSilenced(context)){
 				Audio.mute(context);
 			}
-		} else if (intent.getAction().equals(AlarmSilencerBroadcastReceiver.ACTION_END_EVENT_SILENCE)){
+		} else if (intent.getAction().equals(AlarmSilencerBroadcastReceiver.ACTION_END_EVENT_SILENCE) || intent.getAction().equals(AlarmSilencerBroadcastReceiver.ACTION_END_TEMPORARY_SILENCE)){
 			Log.i(TAG, "Received end silence event");
 			decrementSilenceCount(context);
 			if(Audio.isVolumnSilenced(context) && getSilenceCount(context) < 1){
 				SilencedNotificationFactory.getInstance().cancelNotification(context);
 				Audio.restore(context);
 			}
-		} else if ( intent.getAction().equals(AlarmSilencerBroadcastReceiver.ACTION_END_TEMPORARY_SILENCE)){
+		} else if (intent.getAction().equals(AlarmSilencerBroadcastReceiver.ACTION_END_SILENCE_ABSOLUTE)){
 			Log.i(TAG, "Received end silence temporary");
-			clearSilenceCount(context);
+//			clearSilenceCount(context);
 			SilencedNotificationFactory.getInstance().cancelNotification(context);
 			Audio.restore(context);
 		} else {

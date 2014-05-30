@@ -82,7 +82,7 @@ public class SilencedNotificationFactory {
 		String formattedAmPm = context.getResources().getString((amPm == Calendar.AM) ? R.string.time_am : R.string.time_pm);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher_lite)
-		.setContentIntent(AlarmFactory.newInstance(context).prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_TEMPORARY_SILENCE))
+		.setContentIntent(AlarmFactory.newInstance(context).prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_SILENCE_ABSOLUTE))
 		.setContentText(context.getString(R.string.notification_click_to_restore))
 		.setContentTitle(context.getString(stringId, hour, formattedMinute, formattedAmPm));
 		Notification notification = builder.build();
@@ -101,7 +101,7 @@ public class SilencedNotificationFactory {
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher_lite)
 		.setContentIntent(AlarmFactory.newInstance(context)
-		.prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_TEMPORARY_SILENCE))
+		.prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_SILENCE_ABSOLUTE))
 		.setContentTitle(context.getString(stringId));
 		Notification notification = builder.build();
 		notification.flags = Notification.FLAG_AUTO_CANCEL;
