@@ -52,7 +52,7 @@ public class AlarmSilencerBroadcastReceiver extends BroadcastReceiver{
 			}
 		} else if (intent.getAction().equals(AlarmSilencerBroadcastReceiver.ACTION_END_SILENCE_ABSOLUTE)){
 			Log.i(TAG, "Received end silence temporary");
-//			clearSilenceCount(context);
+			clearSilenceCount(context);
 			SilencedNotificationFactory.getInstance().cancelNotification(context);
 			Audio.restore(context);
 		} else {

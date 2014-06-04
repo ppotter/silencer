@@ -80,6 +80,7 @@ public class SilencedNotificationFactory {
 	private Notification get(Context context, int hour, int minute, int amPm, int stringId){
 		String formattedMinute = String.valueOf(((minute < 10) ? "0" + minute : minute));
 		String formattedAmPm = context.getResources().getString((amPm == Calendar.AM) ? R.string.time_am : R.string.time_pm);
+		AlarmFactory.newInstance(context).prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_SILENCE_ABSOLUTE).cancel();
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher_lite)
 		.setContentIntent(AlarmFactory.newInstance(context).prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_SILENCE_ABSOLUTE))
@@ -98,6 +99,7 @@ public class SilencedNotificationFactory {
 	 */
 	private Notification get(Context context, int stringId) {
 		mCurrentEndTime = INDEFINITE_END_TIME;
+		AlarmFactory.newInstance(context).prepareIntent(AlarmSilencerBroadcastReceiver.ACTION_END_SILENCE_ABSOLUTE).cancel();
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
 		.setSmallIcon(R.drawable.ic_launcher_lite)
 		.setContentIntent(AlarmFactory.newInstance(context)
